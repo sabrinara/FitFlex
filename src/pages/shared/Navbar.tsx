@@ -50,7 +50,7 @@ export default function Navbar() {
   ];
 
   return (
-    <div className="mx-auto container bg-neutral-900 py-8">
+    <div className="mx-auto container bg-neutral-900 py-5">
       <div className="flex  items-center justify-between lg:p-0 gap-2">
         <Link to="/">
         <div className="flex md:ml-5 items-center">
