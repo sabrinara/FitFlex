@@ -2,10 +2,10 @@
 
 const BenefitsSections = () => {
     return (
-        <div className="px-4 md:px-10 md:py-10 py-2">
-            <div className="flex flex-col md:flex-row-reverse justify-between items-center gap-10 my-10">
-                <div className="w-full md:w-1/2">
-                    <img src="https://gymtek-store-demo.myshopify.com/cdn/shop/files/banner-v9-1.jpg?v=1614293410" alt="" />
+        <div className="px-4  md:py-10 py-2">
+            <div className="flex flex-col md:flex-row-reverse justify-between items-center gap-10 my-10 ">
+                <div className="w-full md:w-1/2 ">
+                    <img src="https://gymtek-store-demo.myshopify.com/cdn/shop/files/banner-v9-1.jpg?v=1614293410" className="h-[80vh]" />
                 </div>
                 <div className="w-full md:w-1/2 text-white text-start md:text-right ">
                     <h5 className="text-slate-400 text-xl font-semibold">
@@ -25,7 +25,7 @@ const BenefitsSections = () => {
             </div>
             <div className="flex flex-col md:flex-row justify-between items-center gap-10 my-10">
                 <div className="w-full md:w-1/2">
-                    <img src="https://images.unsplash.com/photo-1616279967983-ec413476e824?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bSUyMGVxdWlwbWVudHxlbnwwfHwwfHx8MA%3D%3D" className="w-full md:h-[90vh]" alt="" />
+                    <img src="https://images.unsplash.com/photo-1616279967983-ec413476e824?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OTF8fGd5bSUyMGVxdWlwbWVudHxlbnwwfHwwfHx8MA%3D%3D" className="w-full md:h-[80vh]" alt="" />
                 </div>
                 <div className="w-full md:w-1/2 text-white text-start md:text-left ">
                     <h5 className="text-slate-400 text-xl font-semibold">
