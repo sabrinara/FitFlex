@@ -1,7 +1,7 @@
 
 
 const EasyStep = () => {
-    const data =[
+    const data = [
         {
             id: 1,
             name: "Gym Movement",
@@ -26,33 +26,33 @@ const EasyStep = () => {
     ]
     return (
         <div className="pt-10 md:pb-10">
-              <div className="md:my-8 md:ml-2 bg-gradient-to-b from-orange-100 via-orange-500 to-orange-700 bg-clip-text text-transparent">
-                    <h1 className=" text-3xl md:text-5xl font-bold  ">Work Process</h1>
-                    <hr className="my-4 h-1 bg-orange-600 w-6/12 md:w-2/12" />
-                </div>
+            <div className="md:my-8 md:ml-2 bg-gradient-to-b from-orange-100 via-orange-500 to-orange-700 bg-clip-text text-transparent">
+                <h1 className=" text-3xl md:text-5xl font-bold  ">Work Process</h1>
+                <hr className="my-4 h-1 bg-orange-600 w-6/12 md:w-2/12" />
+            </div>
 
-                <div className="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                    {
-                        data.map((item) => (
-                            <div key={item.id} className="flex flex-col justify-center items-center">
-                                <div className="px-3 bg-neutral-900 h-[18rem] rounded-full w-72 hover:bg-orange-800">
-                                   <div className="relative">
-                                   <img src={item.image} className="rounded-full h-[17rem] w-72" />
-                                   <div className="absolute top-64 left-1/2 -translate-x-1/2 -translate-y-1/2">
-                                   <h1 className="text-xl font-bold text-white " >{item.step}</h1>
-                                   </div>
-                                   </div>
+            <div className="text-white grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {
+                    data.map((item) => (
+                        <div key={item.id} className="flex flex-col justify-center items-center">
+                            <div className="px-3 bg-neutral-900 h-[18rem] rounded-full w-72 hover:bg-orange-800">
+                                <div className="relative">
+                                    <img src={item.image} className="rounded-full h-[17rem] w-72" />
+                                    <div className="absolute top-64 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                        <h1 className="text-xl font-bold text-white " >{item.step}</h1>
+                                    </div>
                                 </div>
-                                <div className="pt-4 px-10 text-center">
-                                    
-                                    <h1 className="text-3xl font-bold text-orange-600">{item.name}</h1>
-                                    <p>{item.title2}</p>
-                                </div>
-                                
                             </div>
-                        ))
-                    }
-                </div>
+                            <div className="pt-4 px-10 text-center">
+
+                                <h1 className="text-3xl font-bold text-orange-600">{item.name}</h1>
+                                <p>{item.title2}</p>
+                            </div>
+
+                        </div>
+                    ))
+                }
+            </div>
 
         </div>
     );
