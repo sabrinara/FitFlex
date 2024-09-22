@@ -23,7 +23,7 @@ const CategorySection = () => {
         },
         {
             id: 4,
-            name: "Conditioning",
+            name: "Rope workouts",
             image: "https://www.northernfitness.ca/cdn/shop/collections/14714969_1188687531169651_4680838168080452277_o_540x.jpg?v=1680047727",
 
         },

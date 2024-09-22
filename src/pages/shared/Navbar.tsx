@@ -20,7 +20,7 @@ export default function Navbar() {
     {
       id: 2,
       name: "Products",
-      path: "/allproducts",
+      path: "/products",
     },
     {
       id: 3,

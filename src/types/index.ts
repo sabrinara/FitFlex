@@ -1,14 +1,32 @@
-export type TMovie = {
+export type TProduct = {
   _id: string;
-  title: string;
-  description: string;
-  releaseDate: Date;
-  genre: string;
-  director: string;
-  cast: string;
-  slug: string;
-  viewCount: number;
-  totalRating: number;
-  isDeleted: boolean;
+  name: string;
   image: string;
+  category: string[];  
+  price: number;
+  quantity: number;
+  description: string;
+  createdAt: string; 
 };
+
+
+export type TOrderProduct = {
+  productId: string;   
+  name: string;
+  image: string;
+  description: string;
+  quantity: number;
+  price: number;
+};
+
+
+export type TOrder = {
+  _id: string;
+  name: string;
+  email: string;
+  userImage: string;
+  address: string;
+  phoneNumber: string;
+  products: TOrderProduct[];  
+  createdAt: string;
+}
