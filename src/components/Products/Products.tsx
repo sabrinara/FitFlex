@@ -18,7 +18,7 @@ import {
 const Products = () => {
   const { data, isLoading } = useGetProductsQuery({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(8);
+  const [itemsPerPage] = useState(6);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortByPrice, setSortByPrice] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
