@@ -4,6 +4,7 @@ import CategorySection from "@/components/HomePage/CategorySection";
 import FeaturedProduct from "@/components/HomePage/FeaturedProduct";
 import { HeroSection } from "@/components/HomePage/HeroSection";
 import MosaicImageGallery from "@/components/HomePage/MosaicImageGallery";
+import Scroller from "../shared/Scroller";
 
 export default function Home() {
   return (
@@ -14,7 +15,7 @@ export default function Home() {
       <FeaturedProduct />
       <BenefitsSections />
       <MosaicImageGallery />
-
+      <Scroller />
     </div>
   );
 }

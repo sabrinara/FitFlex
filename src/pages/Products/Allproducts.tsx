@@ -2,10 +2,11 @@
 // import ScrollToTopButton from "../Home/ScrollToTopButton";
 
 import Products from "@/components/Products/Products";
+import Scroller from "../shared/Scroller";
 
 const AllProducts = () => {
   return (
- <div className="">
+
      <div className="flex flex-col items-center justify-center">
       <div className="relative w-full h-[50vh] md:h-[72vh] bg-no-repeat bg-center bg-cover" 
     style={{ 
@@ -21,8 +22,8 @@ const AllProducts = () => {
       </div>
     </div>
     <Products />
+    <Scroller />
   </div>
- </div>
   );
 };
 
