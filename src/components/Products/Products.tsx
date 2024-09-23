@@ -4,6 +4,7 @@ import "aos/dist/aos.css";
 import { useGetProductsQuery } from "@/redux/api/api";
 import { TProduct } from "@/types";
 import { Link } from "react-router-dom";
+import Loading from "@/pages/shared/Loading";
 
 const Products = () => {
   const { data, isLoading } = useGetProductsQuery({});
@@ -17,7 +18,7 @@ const Products = () => {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen mt-10">
-        <p className="text-4xl text-orange-500">Loading...</p>
+       <Loading/>
       </div>
     );
   }
