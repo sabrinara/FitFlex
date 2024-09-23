@@ -24,18 +24,19 @@ export default function Navbar() {
     },
     {
       id: 3,
-      name: "Categories",
-      path: "/allcategories",
+      name: "About",
+      path: "/about",
     },
     {
       id: 4,
-      name: "FAQ",
-      path: "/faq",
+      name: "More",
+      path: "/more",
     },
+  
+    
     // {
     //   id: 3,
-    //   name: "About",
-    //   path: "/about",
+    //  
     // },
     // {
     //   id: 4,
@@ -53,10 +54,10 @@ export default function Navbar() {
     <div className="mx-auto container bg-neutral-900 py-5">
       <div className="flex  items-center justify-between lg:p-0 gap-2">
         <Link to="/">
-        <div className="flex md:ml-5 items-center">
-                    <img src="logo.png" className="h-8 mr-2" alt="" />
-                    <Link to={"/"} className=" text-3xl font-bold bg-gradient-to-r from-orange-200 via-orange-500 to-orange-600 bg-clip-text text-transparent  ">FiTFlex</Link >
-                </div>
+          <div className="flex md:ml-5 items-center">
+            <img src="./logo.png" className="h-8 mr-2" alt="" />
+            <Link to={"/"} className=" text-3xl font-bold bg-gradient-to-r from-orange-200 via-orange-500 to-orange-600 bg-clip-text text-transparent  ">FiTFlex</Link >
+          </div>
         </Link>
 
         {/* large and medium screens */}

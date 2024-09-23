@@ -17,7 +17,7 @@ const ProductDetail = () => {
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen mt-10">
-                <p className="text-4xl text-green-500">Loading...</p>
+                <p className="text-4xl text-orange-500">Loading...</p>
             </div>
         );
     }

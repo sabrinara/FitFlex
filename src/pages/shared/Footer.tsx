@@ -13,7 +13,7 @@ const Footer = () => {
                 <div className="flex flex-col md:flex-row  justify-between md:mx-12 items-center   ">
                     <div className="flex flex-col">
                         <div className="flex items-center ">
-                            <img src="logo.png" className="h-8 md:h-10 mr-1" alt="Logo" />
+                            <img src="./logo.png" className="h-8 md:h-10 mr-1" alt="Logo" />
                             <Link to="/" className="text-3xl md:text-5xl font-bold bg-gradient-to-r from-orange-200 via-orange-500 to-orange-600 bg-clip-text text-transparent">FiTFlex</Link>
                         </div>
                         <hr className="bg-gradient-to-b from-orange-200 via-orange-500 to-orange-600 h-1 my-2 " />

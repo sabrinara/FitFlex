@@ -1,5 +1,6 @@
 import { useGetProductsQuery } from "@/redux/api/api";
 import { TProduct } from "@/types";
+import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 
@@ -8,12 +9,12 @@ const FeaturedProduct = () => {
 
     if (isLoading) {
         return (
-          <div className="flex justify-center items-center h-screen mt-10">
-            <p className="text-4xl text-orange-500">Loading...</p>
-          </div>
+            <div className="flex justify-center items-center h-screen mt-10">
+                <p className="text-4xl text-orange-500">Loading...</p>
+            </div>
         );
-      }
-    
+    }
+
     return (
         <div>
             <div className="my-10">
@@ -22,7 +23,7 @@ const FeaturedProduct = () => {
                     <hr className="my-4 h-1 bg-orange-600 w-6/12 md:w-3/12" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:px-2 gap-10 rounded items-center ">
-                    {data?.slice(0, 4).map((product : TProduct) => (
+                    {data?.slice(0, 7).map((product: TProduct) => (
                         <div key={product._id} className="flex flex-col rounded  bg-neutral-900 hover:transform hover:scale-105 duration-300">
                             <div className="relative">
                                 <img src={product.image} alt={product.name} className="h-72 w-full rounded-t-md " />
@@ -41,12 +42,21 @@ const FeaturedProduct = () => {
                                 {/* <p className="font-bold  text-orange-600"><span className="text-2xl text-white ">Price:</span> {item.price}$</p> */}
                             </div>
                             <div className="flex justify-center md:justify-start items-center md:items-start px-6 pb-6">
-                               <Link to={`/products/${product._id}`}>
-                               <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-sm">Explore More</button>
-                               </Link>
+                                <Link to={`/products/${product._id}`}>
+                                    <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-sm">Explore More</button>
+                                </Link>
                             </div>
                         </div>
                     ))}
+                    <div className="flex justify-center md:justify-normal items-center md:items-start">
+                        <Link to={"/products"}>
+                            <div className="flex justify-center items-center gap-1 2 transform hover:scale-105 transition-transform duration-300 px-3 bg-neutral-900 h-96 rounded-md w-72 hover:" title="View more">
+                                <h1 className="text-xl md:text-2xl font-bold text-orange-600 text-center border-b-8 border-l-8 border-orange-700 pl-4 py-6">View More</h1>
+                                <FaArrowRight className="text-xl text-orange-600 mt-1 hover:animate-wobble" />
+                            </div>
+                        </Link>
+
+                    </div>
                 </div>
             </div>
         </div>
