@@ -1,4 +1,5 @@
 import MainLayout from "@/components/Layouts/MainLayouts";
+import ProductDetail from "@/components/Products/ProductDetail";
 import Products from "@/components/Products/Products";
 import FrequentlyAskQus from "@/pages/FAQ/FrequentlyAskQus";
 import Home from "@/pages/Home/Home";
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/products/:id",
-        element: <Products />,
+        element: <ProductDetail />,
       },
       {
         path: "/allcategories",
