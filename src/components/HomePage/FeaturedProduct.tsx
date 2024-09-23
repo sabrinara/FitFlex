@@ -34,14 +34,19 @@ const FeaturedProduct = () => {
                                     <p className="font-bold  text-orange-600">{product.price}$</p>
                                 </div>
                             </div>
-                            <div className="text-xl py-6 px-6 ">
+                            <div className="text-xl py-4 px-6 ">
                                 <h1 className="font-bold text-2xl text-orange-600"> {product.name}</h1>
 
                                 {/* <p className="text-white overflow-hidden text-base ">{product.description.slice(0, 100)}</p> */}
                                 {/* {item.stock_quantity} */}
                                 {/* <p className="font-bold  text-orange-600"><span className="text-2xl text-white ">Price:</span> {item.price}$</p> */}
                             </div>
-                            <div className="flex justify-center md:justify-start items-center md:items-start px-6 pb-6">
+                            <div className="flex justify-center md:justify-between items-center md:items-start px-6 pb-6">
+                                {data?.quantity !== 0 &&
+                                    <div className="px-3 py-2 backdrop-blur-md bg-orange-600 hover:bg-orange-700 rounded-full">
+                                        <p className="font-bold  text-white">{product.quantity}</p>
+                                    </div>
+                                }
                                 <Link to={`/products/${product._id}`}>
                                     <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-sm">Explore More</button>
                                 </Link>
