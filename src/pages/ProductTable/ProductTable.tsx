@@ -2,7 +2,6 @@ import {
     Table,
     TableBody,
     TableCell,
-    // TableFooter,
     TableHead,
     TableHeader,
     TableRow,
@@ -22,18 +21,17 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogClose,
     DialogContent,
     DialogFooter,
     DialogHeader,
-    Dialogname,
     DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
@@ -41,16 +39,18 @@ import { CiEdit } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
 import { VscOpenPreview } from "react-icons/vsc";
 import { IoCartOutline } from "react-icons/io5";
-import { useDeleteProductMutation,  useGetProductsQuery, useUpdateProductMutation } from "@/redux/api/api";
+import { useDeleteProductMutation, useGetProductsQuery, useUpdateProductMutation } from "@/redux/api/api";
 import { TProduct } from "@/types";
 import Swal from 'sweetalert2';
 import { toast } from "sonner";
+import Loading from "../shared/Loading";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const ProductTable = () => {
     const { data, isLoading } = useGetProductsQuery({});
+    console.log(data);
     const [deleteProduct] = useDeleteProductMutation();
     const [updateProduct] = useUpdateProductMutation();
     const [currentPage, setCurrentPage] = useState(1);
@@ -58,32 +58,36 @@ const ProductTable = () => {
     const [sortByRating, setSortByRating] = useState<boolean>(false);
     const [sortByPrice, setSortByPrice] = useState<boolean>(false);
     const [cart, setCart] = useState<TProduct[]>([]);
-    console.log(cart);
     const navigate = useNavigate();
     const [editFormData, setEditFormData] = useState({
         name: "",
         description: "",
         price: "",
         quantity: "",
-        rating: "",
-        category: "",
+        // category array 
+        category: [] as string[],
         imageFile: "" || null as File | null,
     });
     const [uploading, setUploading] = useState(false);
-
     const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen mt-10">
-                <p className="text-4xl text-green-500">Loading...</p>
+               <Loading />
             </div>
         );
     }
 
-    const { data: product } = data;
-    // console.log(product);
+    
 
+    const filteredData = data?.filter(
+        (item: TProduct) =>
+            item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            item.category.includes(searchTerm.toLowerCase()) 
+    );
+
+  
 
     const itemsPerPage = 5;
 
@@ -94,7 +98,6 @@ const ProductTable = () => {
         });
     };
 
-
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEditFormData({
             ...editFormData,
@@ -102,13 +105,6 @@ const ProductTable = () => {
         });
     };
 
-
-    const handleCategoryChange = (value: string) => {
-        setEditFormData({
-            ...editFormData,
-            category: value,
-        });
-    };
 
 
     const uploadImageToImgbb = async (file: File) => {
@@ -131,7 +127,6 @@ const ProductTable = () => {
         }
     };
 
-
     const handleUpdateProduct = async () => {
         setUploading(true);
 
@@ -150,7 +145,6 @@ const ProductTable = () => {
             description: editFormData.description,
             price: Number(editFormData.price),
             quantity: Number(editFormData.quantity),
-            rating: Number(editFormData.rating),
             category: editFormData.category,
             imageUrl: imageUrl || editFormData.imageFile,
         };
@@ -161,31 +155,25 @@ const ProductTable = () => {
                     id: selectedProductId,
                     data: updatedProductData
                 }).unwrap();
-                
-
+console.log("res",res)
                 toast.success("Product updated successfully");
-                console.log(res);
                 setSelectedProductId(null);
             }
         } catch (error) {
             console.error("Error updating product:", error);
             toast.error("Failed to update product");
         } finally {
-
             setUploading(false);
         }
     };
 
     const handleAddToCart = (product: TProduct) => {
-
         const storedCart = localStorage.getItem("cart");
         const cart = storedCart ? JSON.parse(storedCart) : [];
-
 
         const existingItem = cart.find((item: TProduct) => item._id === product._id);
 
         if (existingItem) {
-
             if (existingItem.quantity < product.quantity) {
                 const updatedCart = cart.map((item: TProduct) =>
                     item._id === product._id
@@ -193,28 +181,20 @@ const ProductTable = () => {
                         : item
                 );
                 localStorage.setItem("cart", JSON.stringify(updatedCart));
-                toast.success("Product added to cart");
                 setCart(updatedCart);
             } else {
                 toast.error("Maximum quantity reached");
             }
         } else {
-
             const updatedCart = [...cart, { ...product, quantity: 1 }];
             localStorage.setItem("cart", JSON.stringify(updatedCart));
             setCart(updatedCart);
         }
 
-        toast.success("Product added to cart");
         navigate("/cart");
     };
 
-    const filteredData = product?.filter(
-        (item: TProduct) =>
-            item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.category.includes(searchTerm.toLowerCase())
-    );
-
+ 
 
     const sortedData = [...filteredData].sort((a, b) => {
         if (sortByRating && sortByPrice) {
@@ -224,7 +204,7 @@ const ProductTable = () => {
         } else if (sortByPrice) {
             return a.price - b.price;
         }
-        return 0; // No sorting if no criteria is selected
+        return 0;
     });
 
     const indexOfLastItem = currentPage * itemsPerPage;
@@ -235,6 +215,7 @@ const ProductTable = () => {
     const handleClick = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
+
     const toggleSortByRating = () => {
         setSortByRating((prev) => !prev);
     };
@@ -249,25 +230,27 @@ const ProductTable = () => {
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: "#104229",
             cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
+            confirmButtonText: "Yes, delete it!",
+            background: "black",
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     const response = await deleteProduct(_id).unwrap();
-                    console.log(response);
                     Swal.fire({
                         name: "Deleted!",
                         text: "Your product has been deleted.",
-                        icon: "success"
+                        icon: "success",
+                        background: "black",
                     });
                 } catch (error) {
                     console.error("Error deleting product:", error);
                     Swal.fire({
                         name: "Error!",
                         text: "There was an issue deleting your product.",
-                        icon: "error"
+                        icon: "error",
+                        background: "black",
                     });
                 }
             }
@@ -275,122 +258,89 @@ const ProductTable = () => {
     };
 
     return (
-        <div className="container w-full">
+        <div className="container w-full text-orange-600 ">
             <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4 my-4">
                 <Link to="/addproduct">
-                    <div className="border border-green-900 px-3 py-2 rounded-none font-semibold hover:bg-green-900 hover:text-white">
+                    <div className="border border-orange-600 px-3 py-2 rounded-none font-semibold hover:bg-orange-600 hover:text-white">
                         <button>Add Products</button>
                     </div>
                 </Link>
 
-                {/* Sort Select */}
                 <div className="flex my-2 md:my-10 md:ml-40 space-x-4 ">
-                    <button
-                        onClick={toggleSortByRating}
-                        className={`border border-green-900 px-3 py-2 rounded-none font-semibold ${sortByRating ? "bg-green-900 text-white" : ""
-                            }`}
-                    >
-                        Top Rating
-                    </button>
+                   
                     <button
                         onClick={toggleSortByPrice}
-                        className={`border border-green-900 px-3 py-2 rounded-none font-semibold ${sortByPrice ? "bg-green-900 text-white" : ""
-                            }`}
+                        className={`border border-orange-600 px-3 py-2 rounded-none font-semibold ${sortByPrice ? "bg-orange-600 text-white" : ""}`}
                     >
-                        In Budget
+                        Sort by Price
                     </button>
                 </div>
-
-                <div className="flex  relative hover:bg-green-900 hover:text-white">
-                    <input
-                        type="text"
-                        placeholder="Search by name or category..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="border border-green-900 px-3 py-2 rounded-none hover:bg-green-900 hover:text-white    pl-10"
-                    />
-                    <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 hover:bg-green-900 hover:text-white" />
-
-                </div>
+                <div className="flex relative bg-neutral-900 hover:bg-orange-600 hover:text-white">
+            <input
+              type="text"
+              placeholder="Search name or category..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="border border-orange-600 px-3 py-2 rounded-md bg-black pl-10"
+            />
+            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-700" />
+          </div>
             </div>
-            <Table>
-                <TableHeader>
-                    <TableRow className="text-center">
-                        <TableHead className="w-[100px]"></TableHead>
-                        <TableHead>name</TableHead>
-                        <TableHead>Category</TableHead>
-                        <TableHead className="pl-11">Image</TableHead>
-                        <TableHead>Rating</TableHead>
-                        <TableHead> Details </TableHead>
-                        <TableHead >
-                            Delete
-                        </TableHead>
-                        <TableHead >Edit</TableHead>
-                        <TableHead >Cart</TableHead>
-                        <TableHead className="text-right">Price</TableHead>
 
+            <Table className="">
+                <TableHeader className="hover:bg-neutral-950">
+                    <TableRow className="bg-neutral-900 hover:bg-neutral-950">
+                        <TableHead className="text-left">Name</TableHead>
+                        {/* <TableHead className="text-left">Description</TableHead> */}
+                        <TableHead className="text-left">Category</TableHead>
+                        <TableHead className="text-left">Image</TableHead>
+                        <TableHead className="text-left">Price</TableHead>
+                        <TableHead className="text-left">Quantity</TableHead>
+                        <TableHead className="text-center">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
-                <TableBody className="">
-                    {currentData.map((item, index) => (
-                        <TableRow key={item.id} className={`${index % 2 === 0 ? "bg-green-50 hover:bg-green-50" : "bg-white"}`}>
-                            <TableCell className="font-medium">
-                                {indexOfFirstItem + index + 1}
-                            </TableCell>
-                            <TableCell>{item.name}</TableCell>
-                            <TableCell>{item.category}</TableCell>
-                            <TableCell className="">
-                                <Link to={`/allproducts/${item._id}`}>
-                                    <img
-                                        src={item.imageUrl}
-                                        alt={item.name}
-                                        className="w-24 h-24 object-cover transform hover:scale-105 transition-transform duration-300"
-                                    />
-                                </Link>
-                            </TableCell>
-                            <TableCell>{item.rating}</TableCell>
+                <TableBody>
+                    {currentData.map((product: TProduct) => (
+                        <TableRow key={product._id}  className="hover:bg-neutral-950">
+                            <TableCell>{product.name}</TableCell>
+                            {/* <TableCell>{product.description}</TableCell> */}
+                            <TableCell>{product.category.join(", ")}</TableCell>
                             <TableCell>
-                                <Link to={`/allproducts/${item._id}`}>
-                                    < VscOpenPreview className="text-xl  " name="View Details" />
-                                </Link>
+                                <img src={product.image} alt={product.name} className="w-20 h-20 object-cover" />
                             </TableCell>
-                            <TableCell className="">
-                                <button onClick={() => handleDeleteProduct(item._id)}>
-                                    <AiFillDelete className="text-red-600 text-xl" />
-                                </button>
-                            </TableCell>
-                            <TableCell >
+                            <TableCell>{product.price}</TableCell>
+                            <TableCell>{product.quantity}</TableCell>
+                            {/* <TableCell>{product.rating}</TableCell> */}
+                            <TableCell className="flex space-x-2">
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <button
+                                        <Button
                                             onClick={() => {
-                                                setSelectedProductId(item._id);
                                                 setEditFormData({
-                                                    name: item.name,
-                                                    description: item.description,
-                                                    price: item.price,
-                                                    quantity: item.quantity,
-                                                    rating: item.rating,
-                                                    category: item.category,
-                                                    imageFile: item.imageFile,
+                                                    name: product.name,
+                                                    description: product.description,
+                                                    price: product.price.toString(),
+                                                    quantity: product.quantity.toString(),
+                                                    category: product.category,
+                                                    imageFile: null,
                                                 });
+                                                setSelectedProductId(product._id);
                                             }}
-                                            className="text-blue-500 text-xl"
                                         >
                                             <CiEdit />
-                                        </button>
+                                        </Button>
                                     </DialogTrigger>
-
-                                    <DialogContent className="bg-green-50 backdrop-blur-xl">
+                                    <DialogContent>
                                         <DialogHeader>
-                                            <Dialogname className="text-green-950 font-bold text-center text-2xl">Edit Product</Dialogname>
+                                            <h3 className="font-bold">Edit Product</h3>
                                         </DialogHeader>
-                                        <div className="space-y-4 text-green-950">
+                                        <div className="space-y-4">
                                             <div>
-                                                <Label htmlFor="name">name</Label>
+                                                <Label htmlFor="name">Name</Label>
                                                 <Input
                                                     id="name"
-                                                    defaultValue={editFormData.name}
+                                                    type="text"
+                                                    value={editFormData.name}
                                                     onChange={handleEditInputChange}
                                                 />
                                             </div>
@@ -398,140 +348,102 @@ const ProductTable = () => {
                                                 <Label htmlFor="description">Description</Label>
                                                 <Input
                                                     id="description"
-                                                    defaultValue={editFormData.description}
+                                                    type="text"
+                                                    value={editFormData.description}
                                                     onChange={handleEditInputChange}
                                                 />
                                             </div>
-                                            <div className="grid grid-cols-3 gap-4">
-                                                <div>
-                                                    <Label htmlFor="price">Price</Label>
-                                                    <Input
-                                                        id="price"
-                                                        type="number"
-                                                        defaultValue={editFormData.price}
-                                                        onChange={handleEditInputChange}
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <Label htmlFor="quantity">Quantity</Label>
-                                                    <Input
-                                                        id="quantity"
-                                                        type="number"
-                                                        defaultValue={editFormData.quantity}
-                                                        onChange={handleEditInputChange}
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <Label htmlFor="rating">Rating</Label>
-                                                    <Input
-                                                        id="rating"
-                                                        type="number"
-                                                        step="0.1"
-                                                        defaultValue={editFormData.rating}
-                                                        onChange={handleEditInputChange}
-                                                    />
-                                                </div>
+                                            <div>
+                                                <Label htmlFor="price">Price</Label>
+                                                <Input
+                                                    id="price"
+                                                    type="number"
+                                                    value={editFormData.price}
+                                                    onChange={handleEditInputChange}
+                                                />
                                             </div>
+                                            <div>
+                                                <Label htmlFor="quantity">Quantity</Label>
+                                                <Input
+                                                    id="quantity"
+                                                    type="number"
+                                                    value={editFormData.quantity}
+                                                    onChange={handleEditInputChange}
+                                                />
+                                            </div>
+                                        
                                             <div>
                                                 <Label htmlFor="category">Category</Label>
-                                                <Select
-                                                    defaultValue={editFormData.category}
-                                                    onValueChange={handleCategoryChange}
-                                                >
-                                                    <SelectTrigger>
-                                                        <SelectValue placeholder="Select a category" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        {uniqueCategories?.map((cat) => (
-                                                            <SelectItem key={cat.name} value={cat.name}>
-                                                                {cat.name}
-                                                            </SelectItem>
-                                                        ))}
-                                                    </SelectContent>
-                                                </Select>
+                                                <Input
+                                                    id="category"
+                                                    type="text"
+                                                    value={editFormData.category}
+                                                    onChange={handleEditInputChange}
+                                                />
                                             </div>
                                             <div>
-                                                <Label htmlFor="image">Image</Label>
+                                                <Label htmlFor="imageFile">Image</Label>
                                                 <Input
-                                                    id="image"
+                                                    id="imageFile"
                                                     type="file"
                                                     onChange={handleFileChange}
-
                                                 />
                                             </div>
                                         </div>
                                         <DialogFooter>
-
-                                            <DialogClose >
-                                                <Button
-                                                    type="button"
-                                                    onClick={handleUpdateProduct}
-                                                    disabled={uploading}
-
-                                                >
-
-                                                    {uploading ? "Uploading..." : "Save Changes"}
-
-                                                </Button>
-                                            </DialogClose>
-                                            <DialogClose>
-                                                <Button type="button">Cancel</Button>
+                                            <Button onClick={handleUpdateProduct}>Save</Button>
+                                            <DialogClose asChild>
+                                                <Button variant="outline">Cancel</Button>
                                             </DialogClose>
                                         </DialogFooter>
                                     </DialogContent>
-
                                 </Dialog>
-                            </TableCell>
-                            <TableCell>
-                                <button
-                                    onClick={() => handleAddToCart(item)}
-                                    className="text-green-950 text-xl"
-                                >
+                                <Button onClick={() => handleDeleteProduct(product._id)}>
+                                    <AiFillDelete />
+                                </Button>
+                                <Button onClick={() => handleAddToCart(product)}>
                                     <IoCartOutline />
-                                </button>
+                                </Button>
                             </TableCell>
-                            <TableCell className="text-right">
-                                {item.price}$
-                            </TableCell>
-
                         </TableRow>
                     ))}
                 </TableBody>
             </Table>
-            <div className="my-6 md:my-10">
-                <Pagination>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious>
-                                {currentPage > 1 && (
-                                    <PaginationLink onClick={() => handleClick(currentPage - 1)}>
-                                        Previous
-                                    </PaginationLink>
-                                )}
-                            </PaginationPrevious>
-                        </PaginationItem>
-                        {[...Array(totalPages)].map((_, index) => (
-                            <PaginationItem key={index}>
-                                <PaginationLink
 
-                                    isActive={currentPage === index + 1}
-                                    onClick={() => handleClick(index + 1)}
-                                >
-                                    {index + 1}
-                                </PaginationLink>
-                            </PaginationItem>
-                        ))}
-                        <PaginationItem>
-                            <PaginationNext>
-                                {currentPage < totalPages && (
-                                    <PaginationLink onClick={() => handleClick(currentPage + 1)}>
-                                        Next
-                                    </PaginationLink>
-                                )}
-                            </PaginationNext>
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
+            <div className="my-6 md:my-10 text-orange-600">
+              <Pagination>
+                <PaginationContent>
+                  <PaginationItem>
+                    <PaginationPrevious className="hover:bg-orange-600 hover:text-white">
+                      {currentPage > 1 && (
+                        <PaginationLink onClick={() => handleClick(currentPage - 1)}>
+                          Previous
+                        </PaginationLink>
+                      )}
+                    </PaginationPrevious>
+                  </PaginationItem>
+                  {[...Array(totalPages)].map((_, index) => (
+                    <PaginationItem key={index}>
+                      <PaginationLink
+                        isActive={currentPage === index + 1}
+                        onClick={() => handleClick(index + 1)}
+                        className="hover:bg-orange-600 hover:text-white"
+                      >
+                        {index + 1}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ))}
+                  <PaginationItem>
+                    <PaginationNext className="hover:bg-orange-600 hover:text-white">
+                      {currentPage < totalPages && (
+                        <PaginationLink onClick={() => handleClick(currentPage + 1)}>
+                          Next
+                        </PaginationLink>
+                      )}
+                    </PaginationNext>
+                  </PaginationItem>
+                </PaginationContent>
+              </Pagination>
             </div>
         </div>
     );

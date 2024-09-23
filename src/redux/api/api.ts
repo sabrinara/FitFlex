@@ -34,7 +34,27 @@ export const baseApi = createApi({
       }),
       providesTags: ["products"],
     }),
+    updateProduct: builder.mutation({
+      query: ({ id, data }) => ({
+        method: "PATCH",
+        url: `/products/${id}`,
+        body: data,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      invalidatesTags: ["products"],
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        method: "DELETE",
+        url: `/products/${id}`,
+      }),
+      invalidatesTags: ["products"],
+    }),
+
+
 }),
 });
 
-export const { useGetProductsQuery, useAddProductMutation, useGetSingleProductQuery} = baseApi;
+export const { useGetProductsQuery, useAddProductMutation, useGetSingleProductQuery, useUpdateProductMutation , useDeleteProductMutation} = baseApi;
