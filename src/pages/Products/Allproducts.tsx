@@ -14,7 +14,7 @@ const AllProducts = () => {
         }}>
       <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  ">
        
-        <h2 className="text-3xl md:text-5xl font-bold md:mb-2 text-orange-600">
+        <h2 className="text-3xl md:text-5xl font-bold md:mb-2 text-orange-600 ">
         All Products
         </h2>
         {/* <h5 className="font-jost text-sm md:text-lg font-medium md:pb-2 tracking-widest text-orange-600 mt-2">That Helps to heal life.</h5> */}
