@@ -3,7 +3,7 @@ import CategoryCard from "../CardPart/CategoryCard";
 
 
 const CategorySection = () => {
-   const {data } =useGetProductsQuery({});
+  const {data} = useGetProductsQuery({});
     return (
         <div>
              <div className="my-8 md:ml-2 bg-gradient-to-b from-orange-100 via-orange-500 to-orange-700 bg-clip-text text-transparent">

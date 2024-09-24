@@ -38,7 +38,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
           </div>
         ))}
         <div className="flex justify-center md:justify-normal items-center md:items-start">
-          <Link to={"/allcategories"}>
+          <Link to={"/products"}>
             <div
               className="flex justify-center items-center gap-1 transform hover:scale-105 transition-transform duration-300 px-3 bg-neutral-900 h-[15rem] rounded-full w-60"
               title="View more"

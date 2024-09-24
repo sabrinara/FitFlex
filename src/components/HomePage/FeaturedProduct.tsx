@@ -55,7 +55,7 @@ const FeaturedProduct = () => {
                     ))}
                     <div className="flex justify-center md:justify-normal items-center md:items-start">
                         <Link to={"/products"}>
-                            <div className="flex justify-center items-center gap-1 2 transform hover:scale-105 transition-transform duration-300 px-3 bg-neutral-900 h-96 rounded-md w-72 hover:" title="View more">
+                            <div className="flex justify-center items-center gap-1 2 transform hover:scale-105 transition-transform duration-300 px-3 bg-neutral-900 h-[70vh] rounded-md w-72 hover:" title="View more">
                                 <h1 className="text-xl md:text-2xl font-bold text-orange-600 text-center border-b-8 border-l-8 border-orange-700 pl-4 py-6">View More</h1>
                                 <FaArrowRight className="text-xl text-orange-600 mt-1 hover:animate-wobble" />
                             </div>
