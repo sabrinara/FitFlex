@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,13 +10,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { useAddProductMutation} from "@/redux/api/api";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -28,11 +21,10 @@ const AddProducts = () => {
   const [addProduct] = useAddProductMutation();
 
   const [formData, setFormData] = useState({
-    title: "",
+    name: "",
     description: "",
     price: "",
     quantity: "",
-    rating: "",
     category: "",
     imageFile: null as File | null,
     isStock: true,
@@ -40,7 +32,6 @@ const AddProducts = () => {
 
   const navigate = useNavigate();
   const [uploading, setUploading] = useState(false);
-
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -53,13 +44,6 @@ const AddProducts = () => {
     setFormData({
       ...formData,
       imageFile: e.target.files ? e.target.files[0] : null,
-    });
-  };
-
-  const handleCategoryChange = (value: string) => {
-    setFormData({
-      ...formData,
-      category: value,
     });
   };
 
@@ -88,35 +72,38 @@ const AddProducts = () => {
     e.preventDefault();
     setUploading(true);
 
-    let imageUrl = "";
+    let image = "";
     if (formData.imageFile) {
-      imageUrl = await uploadImageToImgbb(formData.imageFile);
+      image = await uploadImageToImgbb(formData.imageFile);
     }
 
-    if (!imageUrl) {
+    if (!image) {
       setUploading(false);
       return;
     }
 
+    // Split the category string by commas to convert it into an array
+    const categoryArray = formData.category.split(",").map((cat) => cat.trim());
+
     const productData = {
-      title: formData.title,
+      name: formData.name,
       description: formData.description,
       price: Number(formData.price),
       quantity: Number(formData.quantity),
-      rating: Number(formData.rating),
-      category: formData.category,
-      imageUrl: imageUrl, 
+      category: categoryArray,  // Submit as an array of categories
+      image: image, 
       inStock: true, 
     };
 
     try {
       const response = await addProduct(productData).unwrap();
-      navigate("/allproducts");
+      navigate("/products");
       console.log("Product added successfully:", response);
       toast.success("Product added successfully");
     } catch (error) {
-      if (error.data && error.data.message) {
-        console.error("Error message from server:", error.data.message);
+      if (error instanceof Error) {
+        console.error("Failed to add product:", error.message);
+        toast.error(error.message);
       }
       console.error("Failed to add product:", error);
       toast.error("Failed to add product");
@@ -129,7 +116,7 @@ const AddProducts = () => {
     <div
       className="relative w-full h-[100vh] bg-no-repeat bg-center bg-cover"
       style={{
-        // backgroundImage: `url("https://i.ibb.co/2y2pM4w/b.jpg")`,
+        backgroundImage: `url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3ltfGVufDB8fDB8fHww")`,
       }}
     >
       <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -138,7 +125,7 @@ const AddProducts = () => {
             <CardTitle className="text-orange-600 text-center text-3xl">
               Add product
             </CardTitle>
-            <CardDescription className="text-center">
+            <CardDescription className="text-center text-white">
               Add a new product to FitFlex
             </CardDescription>
           </CardHeader>
@@ -146,13 +133,13 @@ const AddProducts = () => {
             <form onSubmit={handleSubmit}>
               <div className="grid w-full items-center gap-4">
                 <div className="flex flex-col space-y-1.5 text-orange-600">
-                  <Label htmlFor="title">Title</Label>
+                  <Label htmlFor="name">Name</Label>
                   <Input
-                    className="text-orange-600"
+                    className="text-white bg-neutral-950"
                     type="text"
-                    id="title"
-                    placeholder="Write the product title"
-                    value={formData.title}
+                    id="name"
+                    placeholder="Write the product name"
+                    value={formData.name}
                     onChange={handleInputChange}
                     required
                   />
@@ -160,7 +147,7 @@ const AddProducts = () => {
                 <div className="flex flex-col space-y-1.5 text-orange-600">
                   <Label htmlFor="description" >Description</Label>
                   <Input
-                    className="text-orange-600"
+                    className="text-white bg-neutral-950"
                     type="text"
                     id="description"
                     placeholder="Write the product description"
@@ -169,11 +156,11 @@ const AddProducts = () => {
                     required
                   />
                 </div>
-               <div className="grid grid-cols-3 gap-4">
+               <div className="grid grid-cols-2 gap-4">
                <div className="flex flex-col space-y-1.5 text-orange-600">
                   <Label htmlFor="price">Price</Label>
                   <Input
-                    className="text-orange-600"
+                    className="text-white bg-neutral-950"
                     type="number"
                     id="price"
                     placeholder="Product price"
@@ -185,7 +172,7 @@ const AddProducts = () => {
                 <div className="flex flex-col space-y-1.5 text-orange-600">
                   <Label htmlFor="quantity">Quantity</Label>
                   <Input
-                    className="text-orange-600"
+                    className="text-white bg-neutral-950"
                     type="number"
                     id="quantity"
                     placeholder="Product quantity"
@@ -194,40 +181,29 @@ const AddProducts = () => {
                     required
                   />
                 </div>
-                <div className="flex flex-col space-y-1.5 text-orange-600">
-                  <Label htmlFor="rating">Rating</Label>
-                  <Input
-                    className="text-orange-600"
-                    type="number"
-                    id="rating"
-                    placeholder="Product rating"
-                    value={formData.rating}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
+              
                </div>
               <div className="grid grid-cols-2 gap-4">
               <div className="flex flex-col space-y-1.5 text-orange-600">
-                  <Label htmlFor="imageUrl">Image</Label>
+                  <Label htmlFor="image">Image</Label>
                   <Input
                     className="text-orange-600"
                     type="file"
-                    id="imageUrl"
+                    id="image"
                     onChange={handleFileChange}
                     required
                   />
                 </div>
                 <div className="flex flex-col space-y-1.5">
                   <Label htmlFor="category" className="text-orange-600">
-                    Category
+                    Category (comma separated)
                   </Label>
-                 <Input className="text-orange-600" type="text" id="category" placeholder="Product category" value={formData.category} onChange={handleInputChange} required />
+                 <Input className="text-white bg-neutral-950" type="text" id="category" placeholder="Product categories" value={formData.category} onChange={handleInputChange} required />
                 </div>
               </div>
               </div>
               <CardFooter className="flex justify-between items-center mt-6 -mr-6 -ml-6">
-                <Button variant="outline" type="button">
+                <Button variant="outline" type="button" className="text-white bg-neutral-950 hover:bg-orange-600 hover:text-white">
                   Cancel
                 </Button>
                 <Button

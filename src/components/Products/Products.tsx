@@ -115,15 +115,16 @@ const Products = () => {
                   )
                 )
               ).map((category) => (
-                <label key={category} className="mr-4">
+                <label key={category as string} className="mr-4">
                   <input
                     type="checkbox"
-                    checked={selectedCategories.includes(category)}
-                    onChange={() => toggleCategory(category)}
+                    checked={selectedCategories.includes(category as string)}
+                    onChange={() => toggleCategory(category as string)}
                   />
                   {` ${category}`}
                 </label>
-              ))}
+              ))
+              }
           </div>
 
           {/* Clear Filter Button */}

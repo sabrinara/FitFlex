@@ -14,13 +14,6 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -37,7 +30,6 @@ import { FaSearch } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 import { CiEdit } from "react-icons/ci";
 import { Link, useNavigate } from "react-router-dom";
-import { VscOpenPreview } from "react-icons/vsc";
 import { IoCartOutline } from "react-icons/io5";
 import { useDeleteProductMutation, useGetProductsQuery, useUpdateProductMutation } from "@/redux/api/api";
 import { TProduct } from "@/types";
@@ -55,10 +47,10 @@ const ProductTable = () => {
     const [updateProduct] = useUpdateProductMutation();
     const [currentPage, setCurrentPage] = useState(1);
     const [searchTerm, setSearchTerm] = useState<string>("");
-    const [sortByRating, setSortByRating] = useState<boolean>(false);
     const [sortByPrice, setSortByPrice] = useState<boolean>(false);
     const [cart, setCart] = useState<TProduct[]>([]);
     const navigate = useNavigate();
+    console.log(cart);
     const [editFormData, setEditFormData] = useState({
         name: "",
         description: "",
@@ -69,6 +61,7 @@ const ProductTable = () => {
         imageFile: "" || null as File | null,
     });
     const [uploading, setUploading] = useState(false);
+    console.log(uploading);
     const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
     if (isLoading) {
@@ -130,12 +123,12 @@ const ProductTable = () => {
     const handleUpdateProduct = async () => {
         setUploading(true);
 
-        let imageUrl = "";
+        let image = "";
         if (editFormData.imageFile) {
-            imageUrl = await uploadImageToImgbb(editFormData.imageFile);
+            image = await uploadImageToImgbb(editFormData.imageFile);
         }
 
-        if (!imageUrl && editFormData.imageFile) {
+        if (!image && editFormData.imageFile) {
             setUploading(false);
             return;
         }
@@ -146,7 +139,7 @@ const ProductTable = () => {
             price: Number(editFormData.price),
             quantity: Number(editFormData.quantity),
             category: editFormData.category,
-            imageUrl: imageUrl || editFormData.imageFile,
+            image: image || editFormData.imageFile,
         };
 
         try {
@@ -197,11 +190,8 @@ console.log("res",res)
  
 
     const sortedData = [...filteredData].sort((a, b) => {
-        if (sortByRating && sortByPrice) {
-            return b.rating - a.rating || b.price - a.price;
-        } else if (sortByRating) {
-            return b.rating - a.rating;
-        } else if (sortByPrice) {
+
+        if (sortByPrice) {
             return a.price - b.price;
         }
         return 0;
@@ -216,9 +206,6 @@ console.log("res",res)
         setCurrentPage(pageNumber);
     };
 
-    const toggleSortByRating = () => {
-        setSortByRating((prev) => !prev);
-    };
 
     const toggleSortByPrice = () => {
         setSortByPrice((prev) => !prev);
@@ -226,7 +213,7 @@ console.log("res",res)
 
     const handleDeleteProduct = (_id: string) => {
         Swal.fire({
-            name: "Are you sure?",
+            title: "Are you sure?",
             text: "You won't be able to revert this!",
             icon: "warning",
             showCancelButton: true,
@@ -238,8 +225,9 @@ console.log("res",res)
             if (result.isConfirmed) {
                 try {
                     const response = await deleteProduct(_id).unwrap();
+                    console.log("response", response);
                     Swal.fire({
-                        name: "Deleted!",
+                        title: "Deleted!",
                         text: "Your product has been deleted.",
                         icon: "success",
                         background: "black",
@@ -247,7 +235,7 @@ console.log("res",res)
                 } catch (error) {
                     console.error("Error deleting product:", error);
                     Swal.fire({
-                        name: "Error!",
+                        title: "Error!",
                         text: "There was an issue deleting your product.",
                         icon: "error",
                         background: "black",
