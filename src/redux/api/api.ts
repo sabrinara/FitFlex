@@ -52,9 +52,30 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ["products"],
     }),
+    getOrders: builder.query ({
+      query: () => ({
+        method : "GET",
+        url : "/orders"
+      }),
+      providesTags: ["orders"],
+    }),
+    addOrder: builder.mutation({
+      query: (data) => {
+        console.log(data);
+        return {
+          method: "POST",
+          url: "/orders/create-order",
+          body: data,
+          headers: {
+            "Content-Type": "application/json",
+          },
+        };
+      },
+      invalidatesTags: ["orders"],
+    }),
 
 
 }),
 });
 
-export const { useGetProductsQuery, useAddProductMutation, useGetSingleProductQuery, useUpdateProductMutation , useDeleteProductMutation} = baseApi;
+export const { useGetProductsQuery, useAddProductMutation, useGetSingleProductQuery, useUpdateProductMutation , useDeleteProductMutation, useGetOrdersQuery, useAddOrderMutation} = baseApi;

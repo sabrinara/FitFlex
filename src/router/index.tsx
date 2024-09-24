@@ -4,6 +4,7 @@ import About from "@/pages/About/About";
 import Carts from "@/pages/Carts/Carts";
 // import FrequentlyAskQus from "@/pages/FAQ/FrequentlyAskQus";
 import Home from "@/pages/Home/Home";
+import Payment from "@/pages/Payment/Payment";
 import Allproducts from "@/pages/Products/Allproducts";
 import AddProducts from "@/pages/ProductTable/AddProducts";
 import ProductTable from "@/pages/ProductTable/ProductTable";
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
         path: "/cart",
         element: <Carts />,
       },
+      {
+        path:"/payment",
+        element:<Payment/>
+      }
     
      
     ],

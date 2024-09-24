@@ -20,7 +20,7 @@ export type TOrderProduct = {
 };
 
 
-export type TOrder = {
+export type TOrders = {
   _id: string;
   name: string;
   email: string;
