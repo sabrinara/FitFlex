@@ -4,12 +4,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const baseApi = createApi({
   reducerPath: "baseApi",
   baseQuery: fetchBaseQuery({ baseUrl: "https://fit-flex-server-ochre.vercel.app/api" }),
-  tagTypes: ["products","orders"],
+  tagTypes: ["products", "orders"],
   endpoints: (builder) => ({
-    getProducts: builder.query ({
+    getProducts: builder.query({
       query: () => ({
-        method : "GET",
-        url : "/products"
+        method: "GET",
+        url: "/products",
       }),
       providesTags: ["products"],
     }),
@@ -27,10 +27,10 @@ export const baseApi = createApi({
       },
       invalidatesTags: ["products"],
     }),
-    getSingleProduct: builder.query ({
-      query: ({ id } ) => ({
-        method : "GET",
-        url : `/products/${id}`
+    getSingleProduct: builder.query({
+      query: ({ id }) => ({
+        method: "GET",
+        url: `/products/${id}`,
       }),
       providesTags: ["products"],
     }),
@@ -52,10 +52,10 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ["products"],
     }),
-    getOrders: builder.query ({
+    getOrders: builder.query({
       query: () => ({
-        method : "GET",
-        url : "/orders"
+        method: "GET",
+        url: "/orders",
       }),
       providesTags: ["orders"],
     }),
@@ -64,7 +64,7 @@ export const baseApi = createApi({
         console.log(data);
         return {
           method: "POST",
-          url: "/orders/create-order",
+          url: "/orders/create-orders",
           body: data,
           headers: {
             "Content-Type": "application/json",
@@ -73,9 +73,15 @@ export const baseApi = createApi({
       },
       invalidatesTags: ["orders"],
     }),
-
-
-}),
+  }),
 });
 
-export const { useGetProductsQuery, useAddProductMutation, useGetSingleProductQuery, useUpdateProductMutation , useDeleteProductMutation, useGetOrdersQuery, useAddOrderMutation} = baseApi;
+export const {
+  useGetProductsQuery,
+  useAddProductMutation,
+  useGetSingleProductQuery,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+  useGetOrdersQuery,
+  useAddOrderMutation,
+} = baseApi;

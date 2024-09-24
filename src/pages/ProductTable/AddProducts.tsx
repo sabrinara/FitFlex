@@ -28,6 +28,7 @@ const AddProducts = () => {
     category: "",
     imageFile: null as File | null,
     isStock: true,
+    total: 0,
   });
 
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const AddProducts = () => {
       return;
     }
 
-    // Split the category string by commas to convert it into an array
+    
     const categoryArray = formData.category.split(",").map((cat) => cat.trim());
 
     const productData = {
@@ -90,7 +91,7 @@ const AddProducts = () => {
       description: formData.description,
       price: Number(formData.price),
       quantity: Number(formData.quantity),
-      category: categoryArray,  // Submit as an array of categories
+      category: categoryArray,  
       image: image, 
       inStock: true, 
     };

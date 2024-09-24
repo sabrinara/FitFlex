@@ -24,25 +24,16 @@ export default function Navbar() {
     },
     {
       id: 3,
-      name: "About",
-      path: "/about",
-    },
-    {
-      id: 4,
       name: "More",
       path: "/more",
     },
+    {
+      id: 4,
+     
+      name: "About",
+      path: "/about",
+    },
   
-    
-    // {
-    //   id: 3,
-    //  
-    // },
-    // {
-    //   id: 4,
-    //   name: "Contact",
-    //   path: "/contact",
-    // },
     {
       id: 5,
       name: <BsCartCheckFill className="text-2xl" />,

@@ -2,7 +2,7 @@ import MainLayout from "@/components/Layouts/MainLayouts";
 import ProductDetail from "@/components/Products/ProductDetail";
 import About from "@/pages/About/About";
 import Carts from "@/pages/Carts/Carts";
-// import FrequentlyAskQus from "@/pages/FAQ/FrequentlyAskQus";
+import FrequentlyAskQus from "@/pages/FAQ/FrequentlyAskQus";
 import Home from "@/pages/Home/Home";
 import Payment from "@/pages/Payment/Payment";
 import Allproducts from "@/pages/Products/Allproducts";
@@ -39,10 +39,10 @@ const router = createBrowserRouter([
         path: "/more",
         element: <ProductTable />,
       },
-      // {
-      //   path: "/faq",
-      //   element: <FrequentlyAskQus />,
-      // },
+      {
+        path: "/faq",
+        element: <FrequentlyAskQus />,
+      },
       {
         path: "/cart",
         element: <Carts />,

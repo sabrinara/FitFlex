@@ -23,7 +23,7 @@ const Footer = () => {
                         <div className="flex gap-6  my-4 md:my-0 mx-6 justify-center ">
                             <a href="/products" className="underline underline-offset-4 ">Products</a>
                             <a href="/about" className="underline underline-offset-4 ">About</a>
-                            <a href="/contact" className="underline underline-offset-4">Contact</a>
+                            <a href="/faq" className="underline underline-offset-4">FAQ</a>
 
                         </div>
                         <div className="flex gap-6 mx-6 my-3 justify-center ">

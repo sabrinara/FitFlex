@@ -90,7 +90,7 @@ import Scroller from "../shared/Scroller";
         <div className="flex justify-center md:justify-end mt-10">
           <button
             onClick={handleRemoveAll}
-            className="px-4 py-2 bg-red-500 text-white rounded-sm"
+            className="px-4 py-2 bg-orange-600 text-white rounded-sm"
           >
             Clear All Items
           </button>
@@ -103,7 +103,7 @@ import Scroller from "../shared/Scroller";
               </h1>
               <Link
                 to="/allproducts"
-                className="text-2xl font-semibold text-center mb-6 underline underline-offset-2"
+                className="text-2xl font-semibold text-center mb-6 underline underline-offset-2 text-gray-400"
               >
                 Add Some Products
               </Link>

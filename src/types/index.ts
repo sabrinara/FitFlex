@@ -2,22 +2,22 @@ export type TProduct = {
   _id: string;
   name: string;
   image: string;
-  category: string[];  
+  category: string[];
   price: number;
   quantity: number;
   description: string;
-  createdAt: string; 
+  createdAt: string;
 };
 
-
-export type TOrderProduct = {
-  productId: string;   
+export interface TOrderProduct {
+  _id?: string;        
+  productId?: string;   
   name: string;
   image: string;
-  description: string;
   quantity: number;
   price: number;
-};
+  description: string;
+}
 
 
 export type TOrders = {
@@ -27,6 +27,9 @@ export type TOrders = {
   userImage: string;
   address: string;
   phoneNumber: string;
-  products: TOrderProduct[];  
+  total: number;
+  products: TOrderProduct[];
   createdAt: string;
-}
+};
+
+

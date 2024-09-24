@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAddOrderMutation } from "@/redux/api/api";
-import { TOrders, TOrderProduct } from "@/types";
+import { TOrderProduct, TOrders } from "@/types";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -17,15 +16,13 @@ const Payment = () => {
     const cartItems: TOrderProduct[] = JSON.parse(localStorage.getItem("cart") || "[]");
     const allPrice = localStorage.getItem("TotalPrice") || "0";
 
+    console.log(cartItems);
     const [formData, setFormData] = useState({
         name: "",
         email: "",
         phoneNumber: "",
         address: "",
-        company: "",
-        postCode: "",
-        city: "",
-        country: "",
+        total: Number(allPrice),
         imageFile: null as File | null,
         StripePayment: false,
         CashOnDelivery: true,
@@ -72,38 +69,38 @@ const Payment = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setUploading(true);
-
+    
         let userImage = "";
         if (formData.imageFile) {
             userImage = await uploadImageToImgbb(formData.imageFile);
         }
-
+    
         if (!userImage) {
             setUploading(false);
             return;
         }
-
-      
+    
         const productArray = cartItems.map((item: TOrderProduct) => ({
-            productId: item.productId,
+            productId: item._id,  
             name: item.name,
             image: item.image,
             quantity: item.quantity,
             price: item.price,
             description: item.description,
         }));
-
+    
         const orderData: TOrders = {
-            _id: "", 
+            _id: "",
             name: formData.name,
             email: formData.email,
             phoneNumber: formData.phoneNumber,
             address: formData.address,
             userImage: userImage,
+            total: formData.total,
             products: productArray,
             createdAt: new Date().toISOString(),
         };
-
+    
         try {
             const response = await addOrder(orderData).unwrap();
             console.log("Order placed successfully:", response);
@@ -113,19 +110,20 @@ const Payment = () => {
         } catch (error) {
             console.error("Failed to place order:", error);
             toast.error("Failed to place order");
-        }
-        finally {
+        } finally {
             setUploading(false);
         }
     };
+    
+    
 
     return (
-        <div className="relative w-full h-[110vh] bg-no-repeat bg-center bg-cover text-orange-600"
-        style={{
-            backgroundImage: `url("https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fGd5bXxlbnwwfHwwfHx8MA%3D%3D")`,
-          }}
+        <div
+            className="relative w-full h-[110vh] bg-no-repeat bg-center bg-cover text-orange-600"
+            style={{
+                backgroundImage: `url("https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fGd5bXxlbnwwfHwwfHx8MA%3D%3D")`,
+            }}
         >
-         
             <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
                 <Card className="w-[350px] md:w-[500px] bg-transparent md:backdrop-blur-md my-10">
                     <CardHeader>
@@ -178,26 +176,19 @@ const Payment = () => {
                                         required
                                     />
                                 </div>
-
                                 <div className="flex flex-col space-y-1.5 ">
-                                    <Label htmlFor="TotalPrice" className="text-orange-600 mb-2">Total Price</Label>
+                                    <Label htmlFor="imageFile" className="text-orange-600">Profile Image</Label>
                                     <Input
-                                        type="number"
-                                        id="TotalPrice"
-                                        defaultValue={allPrice}
-                                        readOnly
+                                        type="file"
+                                        id="imageFile"
+                                        onChange={handleFileChange}
                                         required
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-col space-y-1.5 ">
-                                <Label htmlFor="userImage" className="text-orange-600 my-2">Profile Image</Label>
-                                <Input type="file" id="userImage" onChange={handleFileChange} required />
-                            </div>
-                            <CardFooter className="flex justify-between items-center mt-6 -mr-6 -ml-6">
-                                <Button variant="outline" type="button">Cancel</Button>
-                                <Button type="submit" className="bg-orange-600" disabled={uploading}>
-                                    {uploading ? "Saving..." : "Save"}
+                            <CardFooter className="flex flex-col space-y-3 mt-4">
+                                <Button type="submit" className="bg-orange-600 hover:bg-orange-700" disabled={uploading}>
+                                    {uploading ? "Submitting..." : "Submit Order"}
                                 </Button>
                             </CardFooter>
                         </form>
