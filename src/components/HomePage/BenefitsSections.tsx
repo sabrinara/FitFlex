@@ -20,8 +20,7 @@ const BenefitsSections = () => {
                         Gym Machine
                     </h1>
                     <p className="text-xl font-thin md:ml-20 pb-10 text-slate-400">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio cupiditate recusandae rerum excepturi sequi sint inventore voluptate ipsa aliquam. Deleniti quas repellat provident sunt odio beatae expedita hic sapiente dolore?
-
+                        Our premium gym machines are designed to enhance your workout experience. With durable construction and versatile settings, they are perfect for strength training, cardiovascular exercises, and home gyms. Built to last, these machines ensure you achieve your fitness goals with maximum efficiency.
                     </p>
                    <div className="flex justify-center md:justify-end">
                    <button className="text-2xl border border-slate-800 hover:bg-orange-700 text-orange-600 hover:text-white font-bold py-2 px-4 md:py-4 md:px-8 rounded ">View Collection</button>
@@ -40,8 +39,7 @@ const BenefitsSections = () => {
                     Exercise Machine
                     </h1>
                     <p className="text-xl font-thin md:mr-20 pb-10 text-slate-400">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio cupiditate recusandae rerum excepturi sequi sint inventore voluptate ipsa aliquam. Deleniti quas repellat provident sunt odio beatae expedita hic sapiente dolore?
-
+                        Upgrade your fitness routine with our state-of-the-art exercise machines. From ellipticals to stationary bikes, we offer equipment that provides effective workouts for all fitness levels. Built with ergonomic designs, these machines help reduce strain while delivering excellent results.
                     </p>
                    <div className="flex justify-center md:justify-start">
                    <button className="text-2xl border border-slate-800 hover:bg-orange-700 text-orange-600 hover:text-white font-bold py-2 px-4 md:py-4 md:px-8 rounded ">View Collection</button>
@@ -61,15 +59,13 @@ const BenefitsSections = () => {
                         Gym Machine
                     </h1>
                     <p className="text-xl font-thin md:ml-20 pb-10 text-slate-400">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Odio cupiditate recusandae rerum excepturi sequi sint inventore voluptate ipsa aliquam. Deleniti quas repellat provident sunt odio beatae expedita hic sapiente dolore?
-
+                        Discover our latest collection of gym machines, tailored for fitness enthusiasts and professionals alike. Each machine is designed for durability, ease of use, and superior performance, offering a comprehensive solution to enhance your fitness journey.
                     </p>
                    <div className="flex justify-center md:justify-end">
                    <button className="text-2xl border border-slate-800 hover:bg-orange-700 text-orange-600 hover:text-white font-bold py-2 px-4 md:py-4 md:px-8 rounded ">View Collection</button>
                    </div>
                 </div>
             </div>
-           
         </div>
     );
 };
