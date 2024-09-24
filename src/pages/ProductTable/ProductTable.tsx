@@ -42,7 +42,6 @@ const image_upload_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key
 
 const ProductTable = () => {
     const { data, isLoading } = useGetProductsQuery({});
-    console.log(data);
     const [deleteProduct] = useDeleteProductMutation();
     const [updateProduct] = useUpdateProductMutation();
     const [currentPage, setCurrentPage] = useState(1);
@@ -51,17 +50,16 @@ const ProductTable = () => {
     const [cart, setCart] = useState<TProduct[]>([]);
     const navigate = useNavigate();
     console.log(cart);
+
     const [editFormData, setEditFormData] = useState({
         name: "",
         description: "",
         price: "",
         quantity: "",
-        // category array 
         category: [] as string[],
         imageFile: "" || null as File | null,
     });
     const [uploading, setUploading] = useState(false);
-    console.log(uploading);
     const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
     if (isLoading) {
@@ -72,23 +70,26 @@ const ProductTable = () => {
         );
     }
 
-    
-
     const filteredData = data?.filter(
         (item: TProduct) =>
             item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            item.category.includes(searchTerm.toLowerCase()) 
+            item.category.some((cat) => cat.toLowerCase().includes(searchTerm.toLowerCase()))
     );
-
-  
 
     const itemsPerPage = 5;
 
     const handleEditInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEditFormData({
-            ...editFormData,
-            [e.target.id]: e.target.value,
-        });
+        if (e.target.id === "category") {
+            setEditFormData({
+                ...editFormData,
+                category: e.target.value.split(",").map(cat => cat.trim()),
+            });
+        } else {
+            setEditFormData({
+                ...editFormData,
+                [e.target.id]: e.target.value,
+            });
+        }
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,8 +98,6 @@ const ProductTable = () => {
             imageFile: e.target.files ? e.target.files[0] : "" || null as File | null,
         });
     };
-
-
 
     const uploadImageToImgbb = async (file: File) => {
         const imageFormData = new FormData();
@@ -141,6 +140,7 @@ const ProductTable = () => {
             category: editFormData.category,
             image: image || editFormData.imageFile,
         };
+        
 
         try {
             if (selectedProductId) {
@@ -148,14 +148,15 @@ const ProductTable = () => {
                     id: selectedProductId,
                     data: updatedProductData
                 }).unwrap();
-console.log("res",res)
+                console.log("Update response:", res);
                 toast.success("Product updated successfully");
                 setSelectedProductId(null);
             }
         } catch (error) {
-            console.error("Error updating product:", error);
-            toast.error("Failed to update product");
-        } finally {
+            console.error("Error updating product,all fields required:", error);
+            toast.error(`Failed to update product,all page required: ${error.message}`);
+        }
+         finally {
             setUploading(false);
         }
     };
@@ -187,10 +188,7 @@ console.log("res",res)
         navigate("/cart");
     };
 
- 
-
     const sortedData = [...filteredData].sort((a, b) => {
-
         if (sortByPrice) {
             return a.price - b.price;
         }
@@ -205,7 +203,6 @@ console.log("res",res)
     const handleClick = (pageNumber: number) => {
         setCurrentPage(pageNumber);
     };
-
 
     const toggleSortByPrice = () => {
         setSortByPrice((prev) => !prev);
@@ -225,15 +222,15 @@ console.log("res",res)
             if (result.isConfirmed) {
                 try {
                     const response = await deleteProduct(_id).unwrap();
-                    console.log("response", response);
+                    console.log(response);
                     Swal.fire({
                         title: "Deleted!",
                         text: "Your product has been deleted.",
                         icon: "success",
                         background: "black",
+                        confirmButtonColor: "#d33",
                     });
                 } catch (error) {
-                    console.error("Error deleting product:", error);
                     Swal.fire({
                         title: "Error!",
                         text: "There was an issue deleting your product.",
@@ -255,7 +252,6 @@ console.log("res",res)
                 </Link>
 
                 <div className="flex my-2 md:my-10 md:ml-40 space-x-4 ">
-                   
                     <button
                         onClick={toggleSortByPrice}
                         className={`border border-orange-600 px-3 py-2 rounded-none font-semibold ${sortByPrice ? "bg-orange-600 text-white" : ""}`}
@@ -264,132 +260,149 @@ console.log("res",res)
                     </button>
                 </div>
                 <div className="flex relative bg-neutral-900 hover:bg-orange-600 hover:text-white">
-            <input
-              type="text"
-              placeholder="Search name or category..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="border border-orange-600 px-3 py-2 rounded-md bg-black pl-10"
-            />
-            <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-700" />
-          </div>
+                    <input
+                        type="text"
+                        placeholder="Search name or category..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="border border-orange-600 px-3 py-2 rounded-md bg-black pl-10"
+                    />
+                    <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-700" />
+                </div>
             </div>
 
             <Table className="">
                 <TableHeader className="hover:bg-neutral-950">
-                    <TableRow className="bg-neutral-900 hover:bg-neutral-950">
-                        <TableHead className="text-left">Name</TableHead>
-                        {/* <TableHead className="text-left">Description</TableHead> */}
-                        <TableHead className="text-left">Category</TableHead>
-                        <TableHead className="text-left">Image</TableHead>
-                        <TableHead className="text-left">Price</TableHead>
-                        <TableHead className="text-left">Quantity</TableHead>
-                        <TableHead className="text-center">Actions</TableHead>
+                    <TableRow className="bg-neutral-950 hover:bg-neutral-900">
+                        <TableHead className="text-orange-600 hover:text-orange-500">
+                            Product Image
+                        </TableHead>
+                        <TableHead className="text-orange-600 hover:text-orange-500">
+                            Product Name
+                        </TableHead>
+                        <TableHead className="text-orange-600 hover:text-orange-500">
+                            Category
+                        </TableHead>
+                        <TableHead className="text-orange-600 hover:text-orange-500">
+                            Price
+                        </TableHead>
+                        <TableHead className="text-orange-600 hover:text-orange-500">
+                            Quantity
+                        </TableHead>
+                        <TableHead className="text-orange-600 hover:text-orange-500">
+                            Actions
+                        </TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {currentData.map((product: TProduct) => (
-                        <TableRow key={product._id}  className="hover:bg-neutral-950">
-                            <TableCell>{product.name}</TableCell>
-                            {/* <TableCell>{product.description}</TableCell> */}
-                            <TableCell>{product.category.join(", ")}</TableCell>
+                        <TableRow key={product._id} className="hover:bg-neutral-950">
                             <TableCell>
-                                <img src={product.image} alt={product.name} className="w-20 h-20 object-cover" />
+                                <img
+                                    src={product.image}
+                                    alt={product.name}
+                                    className="w-16 h-16 object-cover rounded"
+                                />
                             </TableCell>
+                            <TableCell>{product.name}</TableCell>
+                            <TableCell>{product.category.join(", ")}</TableCell>
                             <TableCell>{product.price}</TableCell>
                             <TableCell>{product.quantity}</TableCell>
-                            {/* <TableCell>{product.rating}</TableCell> */}
-                            <TableCell className="flex space-x-2">
+                            <TableCell className="space-x-2">
                                 <Dialog>
-                                    <DialogTrigger asChild>
+                                    <DialogTrigger>
                                         <Button
                                             onClick={() => {
+                                                setSelectedProductId(product._id);
                                                 setEditFormData({
                                                     name: product.name,
                                                     description: product.description,
-                                                    price: product.price.toString(),
-                                                    quantity: product.quantity.toString(),
+                                                    price: String(product.price),
+                                                    quantity: String(product.quantity),
                                                     category: product.category,
                                                     imageFile: null,
                                                 });
-                                                setSelectedProductId(product._id);
                                             }}
+                                            className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
                                         >
                                             <CiEdit />
                                         </Button>
                                     </DialogTrigger>
-                                    <DialogContent>
+                                    <DialogContent className="bg-black border border-orange-500 text-orange-500">
                                         <DialogHeader>
-                                            <h3 className="font-bold">Edit Product</h3>
+                                            <h2>Edit Product</h2>
                                         </DialogHeader>
-                                        <div className="space-y-4">
-                                            <div>
-                                                <Label htmlFor="name">Name</Label>
-                                                <Input
-                                                    id="name"
-                                                    type="text"
-                                                    value={editFormData.name}
-                                                    onChange={handleEditInputChange}
-                                                />
-                                            </div>
-                                            <div>
-                                                <Label htmlFor="description">Description</Label>
-                                                <Input
-                                                    id="description"
-                                                    type="text"
-                                                    value={editFormData.description}
-                                                    onChange={handleEditInputChange}
-                                                />
-                                            </div>
-                                            <div>
-                                                <Label htmlFor="price">Price</Label>
-                                                <Input
-                                                    id="price"
-                                                    type="number"
-                                                    value={editFormData.price}
-                                                    onChange={handleEditInputChange}
-                                                />
-                                            </div>
-                                            <div>
-                                                <Label htmlFor="quantity">Quantity</Label>
-                                                <Input
-                                                    id="quantity"
-                                                    type="number"
-                                                    value={editFormData.quantity}
-                                                    onChange={handleEditInputChange}
-                                                />
-                                            </div>
-                                        
-                                            <div>
-                                                <Label htmlFor="category">Category</Label>
-                                                <Input
-                                                    id="category"
-                                                    type="text"
-                                                    value={editFormData.category}
-                                                    onChange={handleEditInputChange}
-                                                />
-                                            </div>
-                                            <div>
-                                                <Label htmlFor="imageFile">Image</Label>
-                                                <Input
-                                                    id="imageFile"
-                                                    type="file"
-                                                    onChange={handleFileChange}
-                                                />
-                                            </div>
-                                        </div>
+                                        <form>
+                                            <Label htmlFor="name">Name</Label>
+                                            <Input
+                                                type="text"
+                                                id="name"
+                                                value={editFormData.name}
+                                                onChange={handleEditInputChange}
+                                                className="w-full mb-2"
+                                            />
+                                            <Label htmlFor="description">Description</Label>
+                                            <Input
+                                                type="text"
+                                                id="description"
+                                                value={editFormData.description}
+                                                onChange={handleEditInputChange}
+                                                className="w-full mb-2"
+                                            />
+                                            <Label htmlFor="price">Price</Label>
+                                            <Input
+                                                type="number"
+                                                id="price"
+                                                value={editFormData.price}
+                                                onChange={handleEditInputChange}
+                                                className="w-full mb-2"
+                                            />
+                                            <Label htmlFor="quantity">Quantity</Label>
+                                            <Input
+                                                type="number"
+                                                id="quantity"
+                                                value={editFormData.quantity}
+                                                onChange={handleEditInputChange}
+                                                className="w-full mb-2"
+                                            />
+                                            <Label htmlFor="category">Categories (comma-separated)</Label>
+                                            <Input
+                                                type="text"
+                                                id="category"
+                                                value={editFormData.category.join(", ")}
+                                                onChange={handleEditInputChange}
+                                                className="w-full mb-2"
+                                            />
+                                            <Label htmlFor="image">Image</Label>
+                                            <Input
+                                                type="file"
+                                                id="image"
+                                                onChange={handleFileChange}
+                                                className="w-full mb-2"
+                                            />
+                                        </form>
                                         <DialogFooter>
-                                            <Button onClick={handleUpdateProduct}>Save</Button>
-                                            <DialogClose asChild>
-                                                <Button variant="outline">Cancel</Button>
+                                            <DialogClose>
+                                                <Button
+                                                    onClick={handleUpdateProduct}
+                                                    className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black"
+                                                >
+                                                    {uploading ? "Updating..." : "Update Product"}
+                                                </Button>
                                             </DialogClose>
                                         </DialogFooter>
                                     </DialogContent>
                                 </Dialog>
-                                <Button onClick={() => handleDeleteProduct(product._id)}>
+                                <Button
+                                    onClick={() => handleDeleteProduct(product._id)}
+                                    className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
+                                >
                                     <AiFillDelete />
                                 </Button>
-                                <Button onClick={() => handleAddToCart(product)}>
+                                <Button
+                                    onClick={() => handleAddToCart(product)}
+                                    className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
+                                >
                                     <IoCartOutline />
                                 </Button>
                             </TableCell>
