@@ -50,6 +50,7 @@ const ProductTable = () => {
     const [cart, setCart] = useState<TProduct[]>([]);
     const navigate = useNavigate();
     console.log(cart);
+    const [sortByQuantity, setSortByQuantity] = useState<boolean>(false);
 
     const [editFormData, setEditFormData] = useState({
         name: "",
@@ -62,10 +63,11 @@ const ProductTable = () => {
     const [uploading, setUploading] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
 
+
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen mt-10">
-               <Loading />
+                <Loading />
             </div>
         );
     }
@@ -140,7 +142,8 @@ const ProductTable = () => {
             category: editFormData.category,
             image: image || editFormData.imageFile,
         };
-        
+
+        console.log("Updating product with data:", updatedProductData); // Log updated data
 
         try {
             if (selectedProductId) {
@@ -153,13 +156,13 @@ const ProductTable = () => {
                 setSelectedProductId(null);
             }
         } catch (error) {
-            console.error("Error updating product,all fields required:", error);
-            toast.error(`Failed to update product,all page required: ${error.message}`);
-        }
-         finally {
+            console.error("Error updating product:", error);
+            toast.error("Failed to update product,require every field");
+        } finally {
             setUploading(false);
         }
     };
+
 
     const handleAddToCart = (product: TProduct) => {
         const storedCart = localStorage.getItem("cart");
@@ -192,8 +195,12 @@ const ProductTable = () => {
         if (sortByPrice) {
             return a.price - b.price;
         }
-        return 0;
+        if (sortByQuantity) {
+            return a.quantity - b.quantity; // Sort by quantity
+        }
+        return 0; // No sorting if neither sort option is selected
     });
+
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -207,6 +214,11 @@ const ProductTable = () => {
     const toggleSortByPrice = () => {
         setSortByPrice((prev) => !prev);
     };
+
+    const toggleSortByQuantity = () => {
+        setSortByQuantity((prev) => !prev);
+    };
+
 
     const handleDeleteProduct = (_id: string) => {
         Swal.fire({
@@ -228,7 +240,7 @@ const ProductTable = () => {
                         text: "Your product has been deleted.",
                         icon: "success",
                         background: "black",
-                        confirmButtonColor: "#d33",
+                        confirmButtonColor: "#ea580c",
                     });
                 } catch (error) {
                     Swal.fire({
@@ -245,20 +257,6 @@ const ProductTable = () => {
     return (
         <div className="container w-full text-orange-600 ">
             <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4 my-4">
-                <Link to="/addproduct">
-                    <div className="border border-orange-600 px-3 py-2 rounded-none font-semibold hover:bg-orange-600 hover:text-white">
-                        <button>Add Products</button>
-                    </div>
-                </Link>
-
-                <div className="flex my-2 md:my-10 md:ml-40 space-x-4 ">
-                    <button
-                        onClick={toggleSortByPrice}
-                        className={`border border-orange-600 px-3 py-2 rounded-none font-semibold ${sortByPrice ? "bg-orange-600 text-white" : ""}`}
-                    >
-                        Sort by Price
-                    </button>
-                </div>
                 <div className="flex relative bg-neutral-900 hover:bg-orange-600 hover:text-white">
                     <input
                         type="text"
@@ -269,6 +267,31 @@ const ProductTable = () => {
                     />
                     <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-700" />
                 </div>
+
+
+                <div className="flex my-2 md:my-10 md:mr-10 space-x-4 ">
+                    <button
+                        onClick={toggleSortByQuantity}
+                        className={`border border-orange-600 px-3 py-2 rounded font-semibold ${sortByQuantity ? "bg-orange-600 text-white" : ""}`}
+                    >
+                        Sort by Quantity
+                    </button>
+
+                    <button
+                        onClick={toggleSortByPrice}
+                        className={`border border-orange-600 px-3 py-2 rounded font-semibold ${sortByPrice ? "bg-orange-600 text-white" : ""}`}
+                    >
+                        Sort by Price
+                    </button>
+                </div>
+                <div>
+                    <Link to="/addproduct">
+                        <div className="border border-orange-600 px-3 py-2 rounded font-semibold hover:bg-orange-600 hover:text-white">
+                            <button>Add Products</button>
+                        </div>
+                    </Link>
+                </div>
+
             </div>
 
             <Table className="">
@@ -412,39 +435,39 @@ const ProductTable = () => {
             </Table>
 
             <div className="my-6 md:my-10 text-orange-600">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious className="hover:bg-orange-600 hover:text-white">
-                      {currentPage > 1 && (
-                        <PaginationLink onClick={() => handleClick(currentPage - 1)}>
-                          Previous
-                        </PaginationLink>
-                      )}
-                    </PaginationPrevious>
-                  </PaginationItem>
-                  {[...Array(totalPages)].map((_, index) => (
-                    <PaginationItem key={index}>
-                      <PaginationLink
-                        isActive={currentPage === index + 1}
-                        onClick={() => handleClick(index + 1)}
-                        className="hover:bg-orange-600 hover:text-white"
-                      >
-                        {index + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-                  <PaginationItem>
-                    <PaginationNext className="hover:bg-orange-600 hover:text-white">
-                      {currentPage < totalPages && (
-                        <PaginationLink onClick={() => handleClick(currentPage + 1)}>
-                          Next
-                        </PaginationLink>
-                      )}
-                    </PaginationNext>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
+                <Pagination>
+                    <PaginationContent>
+                        <PaginationItem>
+                            <PaginationPrevious className="hover:bg-orange-600 hover:text-white">
+                                {currentPage > 1 && (
+                                    <PaginationLink onClick={() => handleClick(currentPage - 1)}>
+                                        Previous
+                                    </PaginationLink>
+                                )}
+                            </PaginationPrevious>
+                        </PaginationItem>
+                        {[...Array(totalPages)].map((_, index) => (
+                            <PaginationItem key={index}>
+                                <PaginationLink
+                                    isActive={currentPage === index + 1}
+                                    onClick={() => handleClick(index + 1)}
+                                    className="hover:bg-orange-600 hover:text-white"
+                                >
+                                    {index + 1}
+                                </PaginationLink>
+                            </PaginationItem>
+                        ))}
+                        <PaginationItem>
+                            <PaginationNext className="hover:bg-orange-600 hover:text-white">
+                                {currentPage < totalPages && (
+                                    <PaginationLink onClick={() => handleClick(currentPage + 1)}>
+                                        Next
+                                    </PaginationLink>
+                                )}
+                            </PaginationNext>
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
             </div>
         </div>
     );

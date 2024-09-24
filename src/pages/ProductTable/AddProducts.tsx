@@ -116,7 +116,7 @@ const AddProducts = () => {
     <div
       className="relative w-full h-[100vh] bg-no-repeat bg-center bg-cover"
       style={{
-        backgroundImage: `url("https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z3ltfGVufDB8fDB8fHww")`,
+        backgroundImage: `url("https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTJ8fGd5bXxlbnwwfHwwfHx8MA%3D%3D")`,
       }}
     >
       <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
@@ -183,7 +183,7 @@ const AddProducts = () => {
                 </div>
               
                </div>
-              <div className="grid grid-cols-2 gap-4">
+              
               <div className="flex flex-col space-y-1.5 text-orange-600">
                   <Label htmlFor="image">Image</Label>
                   <Input
@@ -200,7 +200,6 @@ const AddProducts = () => {
                   </Label>
                  <Input className="text-white bg-neutral-950" type="text" id="category" placeholder="Product categories" value={formData.category} onChange={handleInputChange} required />
                 </div>
-              </div>
               </div>
               <CardFooter className="flex justify-between items-center mt-6 -mr-6 -ml-6">
                 <Button variant="outline" type="button" className="text-white bg-neutral-950 hover:bg-orange-600 hover:text-white">
