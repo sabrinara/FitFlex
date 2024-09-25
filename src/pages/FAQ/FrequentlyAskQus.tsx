@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const faqData = [
     {
@@ -26,7 +26,7 @@ const faqData = [
 const FrequentlyAskQus = () => {
     const [activeIndex, setActiveIndex] = useState(null);
 
-    const toggleFAQ = (index) => {
+    const toggleFAQ = (index:any) => {
         setActiveIndex(activeIndex === index ? null : index);
     };
 
