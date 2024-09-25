@@ -7,6 +7,7 @@ import { FaHeart } from "react-icons/fa";
 import { TProduct } from "@/types";
 import Loading from "@/pages/shared/Loading";
 import ProductCategory from "../CardPart/ProductCategory";
+import Scroller from "@/pages/shared/Scroller";
 
 const ProductDetail = () => {
     const { id: _id } = useParams();
@@ -101,6 +102,7 @@ const ProductDetail = () => {
         </div>
 
         <ProductCategory category={data?.category?.[0]}   />
+        <Scroller />
         </div>
     );
 };

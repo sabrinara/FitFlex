@@ -75,7 +75,7 @@ const FeaturedProduct = () => {
                                 {/* {item.stock_quantity} */}
                                 {/* <p className="font-bold  text-orange-600"><span className="text-2xl text-white ">Price:</span> {item.price}$</p> */}
                             </div>
-                            <div className="flex justify-center md:justify-between items-center md:items-start px-6 pb-6">
+                            <div className="flex justify-between items-center md:items-start px-6 pb-6 ">
                                 {data?.quantity !== 0 &&
                                     <div className="px-3 py-2 backdrop-blur-md bg-orange-600 hover:bg-orange-700 rounded-full">
                                         <p className="font-bold  text-white">{product.quantity}</p>
