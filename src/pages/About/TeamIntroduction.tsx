@@ -35,12 +35,12 @@ const TeamIntroduction = () => {
     ];
 
     return (
-        <div className="py-16 px-6  flex flex-col items-center">
+        <div className="py-16 px-6 flex flex-col items-center mx-4 md:mx-10">
             <h3 className="text-3xl md:text-5xl font-bold text-orange-600 pb-8">Meet Our Team</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {teamMembers.map((member, index) => (
-                    <div className="flex flex-col items-center bg-neutral-950 p-10 mx-10 rounded-lg shadow-lg" data-aos="fade-up" key={index}>
-                        <img src={member.img} alt={member.name} className="w-32 h-32 rounded-full mb-4 object-cover" />
+                    <div className="flex flex-col items-center bg-neutral-950 p-12  rounded-lg shadow-lg" data-aos="fade-up" key={index}>
+                        <img src={member.img} alt={member.name} className="w-32 md:w-40 h-32 md:h-40 rounded-full mb-4 object-cover" />
                         <h4 className="text-xl font-bold text-orange-600">{member.name}</h4>
                         <p className="text-sm text-gray-300 italic">{member.role}</p>
                         <p className="text-gray-400 mt-2 text-center">{member.bio}</p>
