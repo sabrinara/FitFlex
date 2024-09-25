@@ -3,9 +3,9 @@ import { useGetProductsByCategoryQuery } from "@/redux/api/api";
 import { TProduct } from "@/types";
 import { Link } from "react-router-dom";
 
-const ProductCategory = ({ category }) => {
+const ProductCategory = ({ category }: { category: string }) => {
     console.log('Category received:', category); // Log category for debugging
-    const { data, isLoading, error } = useGetProductsByCategoryQuery(category);
+    const { data, isLoading } = useGetProductsByCategoryQuery(category);
     console.log(data);
     
     if (isLoading) {
@@ -16,9 +16,7 @@ const ProductCategory = ({ category }) => {
         );
     }
 
-    if (error) {
-        return <div>Error loading products: {error}</div>; // Handle error state
-    }
+
 
     if (!data || data.length === 0) {
         return <div>No products found in this category.</div>; // Handle no data case

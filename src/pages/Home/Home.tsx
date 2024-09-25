@@ -11,8 +11,9 @@ export default function Home() {
   return (
     <div className="mx-auto container">
       <HeroSection />
-      {/* <ExtraSection /> */}
+     
       <CategorySection />
+      <ExtraSection />
       {/* <EasyStep /> */}
       <FeaturedProduct />
       <BenefitsSections />
