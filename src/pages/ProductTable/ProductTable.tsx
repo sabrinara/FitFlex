@@ -255,219 +255,233 @@ const ProductTable = () => {
     };
 
     return (
-        <div className="px-10 w-full text-orange-600 bg-gradient-to-t from-orange-950 via-black to-black">
-            <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4 my-4">
-                <div className="flex relative bg-neutral-900 hover:bg-orange-600 hover:text-white">
-                    <input
-                        type="text"
-                        placeholder="Search name or category..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="border border-orange-600 px-3 py-2 rounded-md bg-black pl-10"
-                    />
-                    <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-700" />
+        <div className="flex flex-col items-center justify-center">
+           
+            <div className="relative w-full h-[50vh] md:h-[72vh] bg-no-repeat bg-center bg-cover"
+                style={{
+                    backgroundImage: `url("https://images.unsplash.com/photo-1674834727206-4bc272bfd8da?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjN8fGZpdG5lc3MlMjBlcXVpcG1lbnR8ZW58MHx8MHx8fDA%3D")`,
+                }}>
+                <div className="absolute flex flex-col items-center justify-center top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-neutral-800 px-4 py-4 opacity-80 rounded">
+                    <h2 className="text-2xl md:text-5xl font-bold md:mb-2 text-orange-600">
+                        Product Manager
+                    </h2>
+
                 </div>
-
-
-                <div className="flex my-2 md:my-10 md:mr-10 space-x-4 ">
-                    <button
-                        onClick={toggleSortByQuantity}
-                        className={`border border-orange-600 px-3 py-2 rounded font-semibold ${sortByQuantity ? "bg-orange-600 text-white" : ""}`}
-                    >
-                        Sort by Quantity
-                    </button>
-
-                    <button
-                        onClick={toggleSortByPrice}
-                        className={`border border-orange-600 px-3 py-2 rounded font-semibold ${sortByPrice ? "bg-orange-600 text-white" : ""}`}
-                    >
-                        Sort by Price
-                    </button>
-                </div>
-                <div>
-                    <Link to="/addproduct">
-                        <div className="border border-orange-600 px-3 py-2 rounded font-semibold hover:bg-orange-600 hover:text-white">
-                            <button>Add Products</button>
-                        </div>
-                    </Link>
-                </div>
-
             </div>
+            <div className="px-10 w-full text-orange-600 bg-gradient-to-t from-orange-950 via-black to-black">
+                <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4 my-4">
+                    <div className="flex relative bg-neutral-900 hover:bg-orange-600 hover:text-white">
+                        <input
+                            type="text"
+                            placeholder="Search name or category..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="border border-orange-600 px-3 py-2 rounded-md bg-black pl-10"
+                        />
+                        <FaSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-orange-700" />
+                    </div>
 
-            <Table className="">
-                <TableHeader className="hover:bg-neutral-950">
-                    <TableRow className="bg-neutral-950 hover:bg-neutral-900">
-                        <TableHead className="text-orange-600 hover:text-orange-500">
-                            Product Image
-                        </TableHead>
-                        <TableHead className="text-orange-600 hover:text-orange-500">
-                            Product Name
-                        </TableHead>
-                        <TableHead className="text-orange-600 hover:text-orange-500">
-                            Category
-                        </TableHead>
-                        <TableHead className="text-orange-600 hover:text-orange-500">
-                            Price
-                        </TableHead>
-                        <TableHead className="text-orange-600 hover:text-orange-500">
-                            Quantity
-                        </TableHead>
-                        <TableHead className="text-orange-600 hover:text-orange-500">
-                            Actions
-                        </TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {currentData.map((product: TProduct) => (
-                        <TableRow key={product._id} className="hover:bg-neutral-950">
-                            <TableCell>
-                                <img
-                                    src={product.image}
-                                    alt={product.name}
-                                    className="w-16 h-16 object-cover rounded"
-                                />
-                            </TableCell>
-                            <TableCell>{product.name}</TableCell>
-                            <TableCell>{product.category.join(", ")}</TableCell>
-                            <TableCell>{product.price}</TableCell>
-                            <TableCell>{product.quantity}</TableCell>
-                            <TableCell className="space-x-2">
-                                <Dialog>
-                                    <DialogTrigger>
-                                        <Button
-                                            onClick={() => {
-                                                setSelectedProductId(product._id);
-                                                setEditFormData({
-                                                    name: product.name,
-                                                    description: product.description,
-                                                    price: String(product.price),
-                                                    quantity: String(product.quantity),
-                                                    category: product.category,
-                                                    imageFile: null,
-                                                });
-                                            }}
-                                            className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
-                                        >
-                                            <CiEdit />
-                                        </Button>
-                                    </DialogTrigger>
-                                    <DialogContent className="bg-black border border-orange-500 text-orange-500">
-                                        <DialogHeader>
-                                            <h2>Edit Product</h2>
-                                        </DialogHeader>
-                                        <form>
-                                            <Label htmlFor="name">Name</Label>
-                                            <Input
-                                                type="text"
-                                                id="name"
-                                                value={editFormData.name}
-                                                onChange={handleEditInputChange}
-                                                className="w-full mb-2"
-                                            />
-                                            <Label htmlFor="description">Description</Label>
-                                            <Input
-                                                type="text"
-                                                id="description"
-                                                value={editFormData.description}
-                                                onChange={handleEditInputChange}
-                                                className="w-full mb-2"
-                                            />
-                                            <Label htmlFor="price">Price</Label>
-                                            <Input
-                                                type="number"
-                                                id="price"
-                                                value={editFormData.price}
-                                                onChange={handleEditInputChange}
-                                                className="w-full mb-2"
-                                            />
-                                            <Label htmlFor="quantity">Quantity</Label>
-                                            <Input
-                                                type="number"
-                                                id="quantity"
-                                                value={editFormData.quantity}
-                                                onChange={handleEditInputChange}
-                                                className="w-full mb-2"
-                                            />
-                                            <Label htmlFor="category">Categories (comma-separated)</Label>
-                                            <Input
-                                                type="text"
-                                                id="category"
-                                                value={editFormData.category.join(", ")}
-                                                onChange={handleEditInputChange}
-                                                className="w-full mb-2"
-                                            />
-                                            <Label htmlFor="image">Image</Label>
-                                            <Input
-                                                type="file"
-                                                id="image"
-                                                onChange={handleFileChange}
-                                                className="w-full mb-2"
-                                            />
-                                        </form>
-                                        <DialogFooter>
-                                            <DialogClose>
-                                                <Button
-                                                    onClick={handleUpdateProduct}
-                                                    className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black"
-                                                >
-                                                    {uploading ? "Updating..." : "Update Product"}
-                                                </Button>
-                                            </DialogClose>
-                                        </DialogFooter>
-                                    </DialogContent>
-                                </Dialog>
-                                <Button
-                                    onClick={() => handleDeleteProduct(product._id)}
-                                    className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
-                                >
-                                    <AiFillDelete />
-                                </Button>
-                                <Button
-                                    onClick={() => handleAddToCart(product)}
-                                    className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
-                                >
-                                    <IoCartOutline />
-                                </Button>
-                            </TableCell>
+
+                    <div className="flex my-2 md:my-10 md:mr-10 space-x-4 ">
+                        <button
+                            onClick={toggleSortByQuantity}
+                            className={`border border-orange-600 px-3 py-2 rounded font-semibold ${sortByQuantity ? "bg-orange-600 text-white" : ""}`}
+                        >
+                            Sort by Quantity
+                        </button>
+
+                        <button
+                            onClick={toggleSortByPrice}
+                            className={`border border-orange-600 px-3 py-2 rounded font-semibold ${sortByPrice ? "bg-orange-600 text-white" : ""}`}
+                        >
+                            Sort by Price
+                        </button>
+                    </div>
+                    <div>
+                        <Link to="/addproduct">
+                            <div className="border border-orange-600 px-3 py-2 rounded font-semibold hover:bg-orange-600 hover:text-white">
+                                <button>Add Products</button>
+                            </div>
+                        </Link>
+                    </div>
+
+                </div>
+
+                <Table className="">
+                    <TableHeader className="hover:bg-neutral-950">
+                        <TableRow className="bg-neutral-950 hover:bg-neutral-900">
+                            <TableHead className="text-orange-600 hover:text-orange-500">
+                                Product Image
+                            </TableHead>
+                            <TableHead className="text-orange-600 hover:text-orange-500">
+                                Product Name
+                            </TableHead>
+                            <TableHead className="text-orange-600 hover:text-orange-500">
+                                Category
+                            </TableHead>
+                            <TableHead className="text-orange-600 hover:text-orange-500">
+                                Price
+                            </TableHead>
+                            <TableHead className="text-orange-600 hover:text-orange-500">
+                                Quantity
+                            </TableHead>
+                            <TableHead className="text-orange-600 hover:text-orange-500 pl-10">
+                                Actions
+                            </TableHead>
                         </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-
-            <div className="py-6 md:py-10 text-orange-600">
-                <Pagination>
-                    <PaginationContent>
-                        <PaginationItem>
-                            <PaginationPrevious className="hover:bg-orange-600 hover:text-white">
-                                {currentPage > 1 && (
-                                    <PaginationLink onClick={() => handleClick(currentPage - 1)}>
-                                        Previous
-                                    </PaginationLink>
-                                )}
-                            </PaginationPrevious>
-                        </PaginationItem>
-                        {[...Array(totalPages)].map((_, index) => (
-                            <PaginationItem key={index}>
-                                <PaginationLink
-                                    isActive={currentPage === index + 1}
-                                    onClick={() => handleClick(index + 1)}
-                                    className="hover:bg-orange-600 hover:text-white"
-                                >
-                                    {index + 1}
-                                </PaginationLink>
-                            </PaginationItem>
+                    </TableHeader>
+                    <TableBody>
+                        {currentData.map((product: TProduct) => (
+                            <TableRow key={product._id} className="hover:bg-neutral-950">
+                                <TableCell>
+                                    <img
+                                        src={product.image}
+                                        alt={product.name}
+                                        className="w-16 h-16 object-cover rounded"
+                                    />
+                                </TableCell>
+                                <TableCell>{product.name}</TableCell>
+                                <TableCell>{product.category.join(", ")}</TableCell>
+                                <TableCell>{product.price}</TableCell>
+                                <TableCell>{product.quantity}</TableCell>
+                                <TableCell className="space-x-2">
+                                    <Dialog>
+                                        <DialogTrigger>
+                                            <Button
+                                                onClick={() => {
+                                                    setSelectedProductId(product._id);
+                                                    setEditFormData({
+                                                        name: product.name,
+                                                        description: product.description,
+                                                        price: String(product.price),
+                                                        quantity: String(product.quantity),
+                                                        category: product.category,
+                                                        imageFile: null,
+                                                    });
+                                                }}
+                                                className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
+                                            >
+                                                <CiEdit />
+                                            </Button>
+                                        </DialogTrigger>
+                                        <DialogContent className="bg-black border border-orange-500 text-orange-500">
+                                            <DialogHeader>
+                                                <h2>Edit Product</h2>
+                                            </DialogHeader>
+                                            <form>
+                                                <Label htmlFor="name">Name</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="name"
+                                                    value={editFormData.name}
+                                                    onChange={handleEditInputChange}
+                                                    className="w-full mb-2"
+                                                />
+                                                <Label htmlFor="description">Description</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="description"
+                                                    value={editFormData.description}
+                                                    onChange={handleEditInputChange}
+                                                    className="w-full mb-2"
+                                                />
+                                                <Label htmlFor="price">Price</Label>
+                                                <Input
+                                                    type="number"
+                                                    id="price"
+                                                    value={editFormData.price}
+                                                    onChange={handleEditInputChange}
+                                                    className="w-full mb-2"
+                                                />
+                                                <Label htmlFor="quantity">Quantity</Label>
+                                                <Input
+                                                    type="number"
+                                                    id="quantity"
+                                                    value={editFormData.quantity}
+                                                    onChange={handleEditInputChange}
+                                                    className="w-full mb-2"
+                                                />
+                                                <Label htmlFor="category">Categories (comma-separated)</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="category"
+                                                    value={editFormData.category.join(", ")}
+                                                    onChange={handleEditInputChange}
+                                                    className="w-full mb-2"
+                                                />
+                                                <Label htmlFor="image">Image</Label>
+                                                <Input
+                                                    type="file"
+                                                    id="image"
+                                                    onChange={handleFileChange}
+                                                    className="w-full mb-2"
+                                                />
+                                            </form>
+                                            <DialogFooter>
+                                                <DialogClose>
+                                                    <Button
+                                                        onClick={handleUpdateProduct}
+                                                        className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black"
+                                                    >
+                                                        {uploading ? "Updating..." : "Update Product"}
+                                                    </Button>
+                                                </DialogClose>
+                                            </DialogFooter>
+                                        </DialogContent>
+                                    </Dialog>
+                                    <Button
+                                        onClick={() => handleDeleteProduct(product._id)}
+                                        className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
+                                    >
+                                        <AiFillDelete />
+                                    </Button>
+                                    <Button
+                                        onClick={() => handleAddToCart(product)}
+                                        className="bg-black text-orange-500 hover:bg-orange-500 hover:text-black p-2"
+                                    >
+                                        <IoCartOutline />
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
                         ))}
-                        <PaginationItem>
-                            <PaginationNext className="hover:bg-orange-600 hover:text-white">
-                                {currentPage < totalPages && (
-                                    <PaginationLink onClick={() => handleClick(currentPage + 1)}>
-                                        Next
+                    </TableBody>
+                </Table>
+
+                <div className="py-6 md:py-10 text-orange-600">
+                    <Pagination>
+                        <PaginationContent>
+                            <PaginationItem>
+                                <PaginationPrevious className="hover:bg-orange-600 hover:text-white">
+                                    {currentPage > 1 && (
+                                        <PaginationLink onClick={() => handleClick(currentPage - 1)}>
+                                            Previous
+                                        </PaginationLink>
+                                    )}
+                                </PaginationPrevious>
+                            </PaginationItem>
+                            {[...Array(totalPages)].map((_, index) => (
+                                <PaginationItem key={index}>
+                                    <PaginationLink
+                                        isActive={currentPage === index + 1}
+                                        onClick={() => handleClick(index + 1)}
+                                        className="hover:bg-orange-600 hover:text-white"
+                                    >
+                                        {index + 1}
                                     </PaginationLink>
-                                )}
-                            </PaginationNext>
-                        </PaginationItem>
-                    </PaginationContent>
-                </Pagination>
+                                </PaginationItem>
+                            ))}
+                            <PaginationItem>
+                                <PaginationNext className="hover:bg-orange-600 hover:text-white">
+                                    {currentPage < totalPages && (
+                                        <PaginationLink onClick={() => handleClick(currentPage + 1)}>
+                                            Next
+                                        </PaginationLink>
+                                    )}
+                                </PaginationNext>
+                            </PaginationItem>
+                        </PaginationContent>
+                    </Pagination>
+                </div>
             </div>
         </div>
     );
