@@ -24,13 +24,13 @@ const TeamIntroduction = () => {
             name: "Mike Johnson",
             role: "Head of Product Development",
             bio: "Mike ensures that all products meet the highest standards of quality and performance, with a focus on innovation.",
-            img: "https://images.unsplash.com/photo-1603415526960-f0b8a3a4b8c2?w=500&q=80"
+            img: "https://images.unsplash.com/photo-1526948128573-703ee1aeb6fa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fHVzZXJ8ZW58MHx8MHx8fDA%3D"
         },
         {
             name: "Emily Davis",
             role: "Customer Support Manager",
             bio: "Emily leads our customer service team, ensuring that every customer has a positive experience with FlexFit.",
-            img: "https://images.unsplash.com/photo-1532074205216-d0e1f1d47f51?w=500&q=80"
+            img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         }
     ];
 
