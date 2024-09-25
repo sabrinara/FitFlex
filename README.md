@@ -1,12 +1,12 @@
 # FltFlex- A Fitness Equipment Selling Website
-
+<!--
 ### **Submission : (Please check my submissions:)**
 
 - Frontend Live Link: [Live Website](https://fitflex-equipment-selling.netlify.app)
 - Backend Live Link: [Backend Link](https://fit-flex-server-ochre.vercel.app/)
 - GitHub Repository URL (Frontend): https://github.com/ashiqee/L2B3-assignment-4-ZFitX-0920
 - GitHub Repository URL (Backend): https://github.com/ashiqee/ZfitX-Backend
-- Overview Video:
+-->
 
 **Objective:**  FitFlex is building an innovative e-commerce platform dedicated to fitness enthusiasts, utilizing cutting-edge technologies like React, Redux, Mongoose, and Express. The website will deliver a smooth and intuitive shopping experience, featuring dynamic product listings, immersive product detail pages, and a seamless, user-friendly cart system. Administrators will benefit from powerful product management tools, while users will enjoy advanced functionalities like lightning-fast, debounced search, and smart page refresh warnings for an optimized experience. For secure and hassle-free payments, optional Stripe integration will be available. This project is designed to create a modern, high-performance online store, offering everything fitness lovers need in one place.
 
