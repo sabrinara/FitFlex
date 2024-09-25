@@ -50,8 +50,8 @@ const FeaturedProduct = () => {
         <div>
             <div className="my-10">
                 <div className="md:my-10 md:ml-3 bg-gradient-to-b from-orange-100 via-orange-500 to-orange-700 bg-clip-text text-transparent">
-                    <h1 className=" text-3xl md:text-5xl font-bold  ">Featured Products</h1>
-                    <hr className="my-4 h-1 bg-orange-600 w-6/12 md:w-3/12" />
+                    <h1 className=" text-3xl md:text-4xl font-bold  ">Featured Products</h1>
+                    <hr className="my-4 h-1 bg-orange-600 w-6/12 md:w-2/12" />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:px-2 gap-10 rounded items-center ">
                     {data?.slice(0, 7).map((product: TProduct) => (
