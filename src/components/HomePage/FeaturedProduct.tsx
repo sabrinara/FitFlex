@@ -61,7 +61,7 @@ const FeaturedProduct = () => {
                                 <div className="absolute bottom-0 right-0 px-2 py-1 bg-orange-700 rounded-tl-sm  text-white">
                                     {product.category[2]}
                                 </ div>
-                                <div className="absolute bottom-0 left-0 px-4 py-2 backdrop-blur-md bg-white/10 rounded-tr-sm  text-orange-600">
+                                <div className="absolute bottom-0 left-0 px-4 py-2  bg-white rounded-tr-sm  text-orange-600">
                                  <FaCartPlus onClick={() => handleAddToCart(product)} />
                                 </ div>
                                 <div className="absolute top-0 right-0 px-4 py-2 backdrop-blur-md bg-white/10 rounded-tr-md">
