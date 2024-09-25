@@ -3,9 +3,9 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useGetProductsQuery } from "@/redux/api/api";
 import { TProduct } from "@/types";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Loading from "@/pages/shared/Loading";
-import { FaSearch } from "react-icons/fa";
+import { FaCartPlus, FaSearch } from "react-icons/fa";
 import {
   Pagination,
   PaginationContent,
@@ -14,6 +14,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import { toast } from "sonner";
 
 const Products = () => {
   const { data, isLoading } = useGetProductsQuery({});
@@ -22,6 +23,9 @@ const Products = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [sortByPrice, setSortByPrice] = useState<boolean>(false);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [cart, setCart] = useState<TProduct[]>([]);
+  const navigate = useNavigate();
+  console.log(cart)
 
   useEffect(() => {
     AOS.init({ duration: 1000 });
@@ -81,6 +85,31 @@ const Products = () => {
     setSortByPrice(!sortByPrice);
   };
 
+  const handleAddToCart = (product: TProduct) => {
+    const storedCart = localStorage.getItem("cart");
+    const cart = storedCart ? JSON.parse(storedCart) : [];
+    const existingItem = cart.find((item: TProduct) => item._id === product._id);
+
+    if (existingItem) {
+      if (existingItem.quantity < product.quantity) {
+        const updatedCart = cart.map((item: TProduct) =>
+          item._id === product._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+        localStorage.setItem("cart", JSON.stringify(updatedCart));
+        toast.success("Product added to cart");
+        setCart(updatedCart);
+      } else {
+        toast.error("Maximum quantity reached");
+      }
+    } else {
+      const updatedCart = [...cart, { ...product, quantity: 1 }];
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+      setCart(updatedCart);
+    }
+    navigate("/cart");
+  };
   return (
     <div>
       <div className="my-10 mx-10 flex flex-col md:flex-row-reverse">
@@ -98,9 +127,8 @@ const Products = () => {
           </div>
           <button
             onClick={toggleSortByPrice}
-            className={`border border-orange-600 bg-white text-orange-700 px-3 py-2 rounded-md font-semibold ${
-              sortByPrice ? "bg-orange-600 text-white" : ""
-            }`}
+            className={`border border-orange-600 bg-white text-orange-700 px-3 py-2 rounded-md font-semibold ${sortByPrice ? "bg-orange-600 text-white" : ""
+              }`}
           >
             Sort by Price
           </button>
@@ -124,7 +152,7 @@ const Products = () => {
                   {` ${category}`}
                 </label>
               ))
-              }
+            }
           </div>
 
           {/* Clear Filter Button */}
@@ -156,21 +184,27 @@ const Products = () => {
                     <div className="absolute top-0 right-0 px-4 py-2 backdrop-blur-md bg-white/10 rounded-tr-md">
                       <p className="font-bold text-orange-600">{product.price}$</p>
                     </div>
+                  
                   </div>
-                  <div className="text-xl py-6 px-6 md:h-44">
-                    <h1 className="font-bold text-2xl text-orange-600">
+
+                  <div className="text-xl py-6 px-6 md:h-40">
+                  <div className=" text-orange-600 flex justify-between">
+                  {product.quantity > 0 && (
+                      <div className="px-2 py-1 backdrop-blur-md bg-orange-600 hover:bg-orange-700 rounded-full">
+                        <p className="font-bold text-white text-sm">{product.quantity}</p>
+                      </div>
+                    )}
+                      <FaCartPlus onClick={() => handleAddToCart(product)} className="text-xl cursor-pointer"/>
+                    </ div>
+                    <h1 className="font-bold text-2xl text-orange-600 mt-2">
                       {product.name}
                     </h1>
                     <p className="text-white overflow-hidden text-base">
-                      {product.description.slice(0, 95)}
+                      {product.description.slice(0, 98) + "..."}
                     </p>
                   </div>
-                  <div className="flex justify-center md:justify-between items-center md:items-start px-6 py-6">
-                    {product.quantity > 0 && (
-                      <div className="px-3 py-2 backdrop-blur-md bg-orange-600 hover:bg-orange-700 rounded-full">
-                        <p className="font-bold text-white">{product.quantity}</p>
-                      </div>
-                    )}
+                  <div className="flex justify-end mt-4 px-6 py-6">
+                   
                     <Link to={`/products/${product._id}`}>
                       <button className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded-sm">
                         Explore More
@@ -185,48 +219,48 @@ const Products = () => {
               <p className="text-white text-3xl font-bold">No products found</p>
             </div>
           )}
-         
+
         </div>
-        
+
       </div>
-       {/* Pagination */}
-       {sortedProducts?.length > 0 && (
-            <div className="my-6 md:my-10 text-orange-600">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious className="hover:bg-orange-600 hover:text-white">
-                      {currentPage > 1 && (
-                        <PaginationLink onClick={() => handleClick(currentPage - 1)}>
-                          Previous
-                        </PaginationLink>
-                      )}
-                    </PaginationPrevious>
-                  </PaginationItem>
-                  {[...Array(totalPages)].map((_, index) => (
-                    <PaginationItem key={index}>
-                      <PaginationLink
-                        isActive={currentPage === index + 1}
-                        onClick={() => handleClick(index + 1)}
-                        className="hover:bg-orange-600 hover:text-white"
-                      >
-                        {index + 1}
-                      </PaginationLink>
-                    </PaginationItem>
-                  ))}
-                  <PaginationItem>
-                    <PaginationNext className="hover:bg-orange-600 hover:text-white">
-                      {currentPage < totalPages && (
-                        <PaginationLink onClick={() => handleClick(currentPage + 1)}>
-                          Next
-                        </PaginationLink>
-                      )}
-                    </PaginationNext>
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          )}
+      {/* Pagination */}
+      {sortedProducts?.length > 0 && (
+        <div className="my-6 md:my-10 text-orange-600">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious className="hover:bg-orange-600 hover:text-white">
+                  {currentPage > 1 && (
+                    <PaginationLink onClick={() => handleClick(currentPage - 1)}>
+                      Previous
+                    </PaginationLink>
+                  )}
+                </PaginationPrevious>
+              </PaginationItem>
+              {[...Array(totalPages)].map((_, index) => (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    isActive={currentPage === index + 1}
+                    onClick={() => handleClick(index + 1)}
+                    className="hover:bg-orange-600 hover:text-white"
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext className="hover:bg-orange-600 hover:text-white">
+                  {currentPage < totalPages && (
+                    <PaginationLink onClick={() => handleClick(currentPage + 1)}>
+                      Next
+                    </PaginationLink>
+                  )}
+                </PaginationNext>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 };

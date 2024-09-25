@@ -1,19 +1,50 @@
+import Loading from "@/pages/shared/Loading";
 import { useGetProductsQuery } from "@/redux/api/api";
 import { TProduct } from "@/types";
-import { FaArrowRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { FaArrowRight, FaCartPlus } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 
 const FeaturedProduct = () => {
     const { data, isLoading } = useGetProductsQuery({});
+    const [cart, setCart] = useState<TProduct[]>([]);
+    const navigate = useNavigate();
+    console.log(cart)
 
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen mt-10">
-                <p className="text-4xl text-orange-500">Loading...</p>
+               <Loading />
             </div>
         );
     }
+    const handleAddToCart = (product: TProduct) => {
+        const storedCart = localStorage.getItem("cart");
+        const cart = storedCart ? JSON.parse(storedCart) : [];
+        const existingItem = cart.find((item: TProduct) => item._id === product._id);
+
+        if (existingItem) {
+            if (existingItem.quantity < product.quantity) {
+                const updatedCart = cart.map((item: TProduct) =>
+                    item._id === product._id
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                );
+                localStorage.setItem("cart", JSON.stringify(updatedCart));
+                toast.success("Product added to cart");
+                setCart(updatedCart);
+            } else {
+                toast.error("Maximum quantity reached");
+            }
+        } else {
+            const updatedCart = [...cart, { ...product, quantity: 1 }];
+            localStorage.setItem("cart", JSON.stringify(updatedCart));
+            setCart(updatedCart);
+        }
+        navigate("/cart");
+    };
 
     return (
         <div>
@@ -27,14 +58,17 @@ const FeaturedProduct = () => {
                         <div key={product._id} className="flex flex-col rounded  bg-neutral-900 hover:transform hover:scale-105 duration-300">
                             <div className="relative">
                                 <img src={product.image} alt={product.name} className="h-72 w-full rounded-t-md " />
-                                <div className="absolute bottom-0 right-0 px-4 py-2 bg-orange-600  text-white">
+                                <div className="absolute bottom-0 right-0 px-2 py-1 bg-orange-700 rounded-tl-sm  text-white">
                                     {product.category[2]}
+                                </ div>
+                                <div className="absolute bottom-0 left-0 px-4 py-2 backdrop-blur-md bg-white/10 rounded-tr-sm  text-orange-600">
+                                 <FaCartPlus onClick={() => handleAddToCart(product)} />
                                 </ div>
                                 <div className="absolute top-0 right-0 px-4 py-2 backdrop-blur-md bg-white/10 rounded-tr-md">
                                     <p className="font-bold  text-orange-600">{product.price}$</p>
                                 </div>
                             </div>
-                            <div className="text-xl py-4 px-6 ">
+                            <div className="text-xl py-4 px-6 h-24">
                                 <h1 className="font-bold text-2xl text-orange-600"> {product.name}</h1>
 
                                 {/* <p className="text-white overflow-hidden text-base ">{product.description.slice(0, 100)}</p> */}
