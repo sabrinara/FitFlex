@@ -255,7 +255,7 @@ const ProductTable = () => {
     };
 
     return (
-        <div className="container w-full text-orange-600 ">
+        <div className="px-10 w-full text-orange-600 bg-gradient-to-t from-orange-950 via-black to-black">
             <div className="flex flex-col-reverse md:flex-row justify-between items-center gap-4 my-4">
                 <div className="flex relative bg-neutral-900 hover:bg-orange-600 hover:text-white">
                     <input
@@ -434,7 +434,7 @@ const ProductTable = () => {
                 </TableBody>
             </Table>
 
-            <div className="my-6 md:my-10 text-orange-600">
+            <div className="py-6 md:py-10 text-orange-600">
                 <Pagination>
                     <PaginationContent>
                         <PaginationItem>
