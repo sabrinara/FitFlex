@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { FaHeart } from "react-icons/fa";
 import { TProduct } from "@/types";
 import Loading from "@/pages/shared/Loading";
+import ProductCategory from "../CardPart/ProductCategory";
 
 const ProductDetail = () => {
     const { id: _id } = useParams();
@@ -18,7 +19,7 @@ const ProductDetail = () => {
     if (isLoading) {
         return (
             <div className="flex justify-center items-center h-screen mt-10">
-              <Loading />
+              <Loading/>
             </div>
         );
     }
@@ -51,25 +52,23 @@ const ProductDetail = () => {
         navigate("/cart");
     };
     return (
-        <div className="flex flex-col items-center p-4 text-orange-600   min-h-screen">
+        <div>
+            <div className="flex flex-col items-center p-4 text-orange-600   min-h-screen">
             <div className="max-w-6xl w-full  rounded-lg shadow-lg p-10 animate__animated animate__fadeIn bg-neutral-950">
                 <h1 className="block md:hidden text-4xl font-bold mb-4">{data?.name}</h1>
                 <div className="flex flex-col md:flex-row-reverse md:gap-20 ">
-                    <div>
+                    <div className="w-full md:w-[160vh]">
                     <img
                         src={data?.image}
                         alt="data image"
-                        className="w-full md:w-[200vh] h-[60vh] md:h-[78vh] rounded-lg shadow-lg md:mr-6 transform hover:scale-105 transition-transform duration-300"
+                        className="w-full md:w-[160vh] h-[60vh] md:h-[78vh] rounded-lg shadow-lg md:mr-6 transform hover:scale-105 transition-transform duration-300"
                     />
                     </div>
                     <div className="flex flex-col md:mt-10 md:ml-6">
                         <div className="text-white mb-1 md:mb-4">
                             <div className="hidden md:flex  justify-between items-center">
                                 <h1 className="text-4xl font-extrabold mb-4">{data?.name}</h1>
-                                <div className="flex items-center gap-2">
-                                    <FaHeart className="text-2xl font-bold mb-2 text-orange-600" />
-                                    <h1 className="text-2xl font-bold mb-2 "> {data?.rating}</h1>
-                                </div>
+                               
                             </div>
                             <div className="flex md:hidden justify-between items-center gap-2">
                                 <p className="text-2xl font-bold mb-2">Price: <span className="text-orange-600 font-bold">${data?.price}</span></p>
@@ -99,6 +98,9 @@ const ProductDetail = () => {
                 </div>
 
             </div>
+        </div>
+
+        <ProductCategory category={data?.category?.[0]}   />
         </div>
     );
 };

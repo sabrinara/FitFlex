@@ -52,6 +52,13 @@ export const baseApi = createApi({
       }),
       invalidatesTags: ["products"],
     }),
+    getProductsByCategory: builder.query({
+      query: (category) => ({
+        method: "GET",
+        url: `/products/category/${category}`,
+      }),
+      providesTags: ["products"],
+    }),
     getOrders: builder.query({
       query: () => ({
         method: "GET",
@@ -82,6 +89,7 @@ export const {
   useGetSingleProductQuery,
   useUpdateProductMutation,
   useDeleteProductMutation,
+  useGetProductsByCategoryQuery,
   useGetOrdersQuery,
   useAddOrderMutation,
 } = baseApi;
