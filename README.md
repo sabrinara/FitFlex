@@ -1,4 +1,4 @@
-# L2Batch-3-assignment-4
+# FltFlex- A Fitness Equipment Selling Website
 
 ### **Submission : (Please check my submissions:)**
 
