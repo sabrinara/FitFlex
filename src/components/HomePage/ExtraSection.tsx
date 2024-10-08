@@ -26,12 +26,12 @@ const ExtraSection = () => {
         },
     ]
     return (
-      <div className="my-10 md:my-32">
+      <div className="my-16 md:my-32">
           <div className="flex flex-col md:flex-row gap-4 justify-center items-center text-orange-500 md:gap-40">
             {data.map((item) => (
                 <div key={item.id} className="flex  items-center justify-between gap-4">
                     <div className="flex flex-col items-center ">
-                        <div className="text-6xl md:text-8xl  flex items-center justify-center">
+                        <div className="text-8xl  flex items-center justify-center mt-4">
                             {item.icon}
                         </div>
                         <div className="flex flex-col mt-4">

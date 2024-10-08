@@ -3,7 +3,6 @@ import { useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
-import { FaHeart } from "react-icons/fa";
 import { TProduct } from "@/types";
 import Loading from "@/pages/shared/Loading";
 import ProductCategory from "../CardPart/ProductCategory";
@@ -54,15 +53,15 @@ const ProductDetail = () => {
     };
     return (
         <div>
-            <div className="flex flex-col items-center p-4 text-orange-600   min-h-screen">
-            <div className="max-w-6xl w-full  rounded-lg shadow-lg p-10 animate__animated animate__fadeIn bg-neutral-950">
-                <h1 className="block md:hidden text-4xl font-bold mb-4">{data?.name}</h1>
+            <div className="flex flex-col items-center md:p-4 text-orange-600   min-h-screen">
+            <div className="max-w-6xl w-full  rounded-lg shadow-lg p-6 md:p-10 animate__animated animate__fadeIn bg-neutral-950">
+                <h1 className="block md:hidden text-3xl font-bold mb-4">{data?.name}</h1>
                 <div className="flex flex-col md:flex-row-reverse md:gap-20 ">
                     <div className="w-full md:w-[160vh]">
                     <img
                         src={data?.image}
                         alt="data image"
-                        className="w-full md:w-[160vh] h-[60vh] md:h-[78vh] rounded-lg shadow-lg md:mr-6 transform hover:scale-105 transition-transform duration-300"
+                        className="w-full md:w-[160vh] h-[50vh] md:h-[78vh] rounded-lg shadow-lg md:mr-6 transform hover:scale-105 transition-transform duration-300"
                     />
                     </div>
                     <div className="flex flex-col md:mt-10 md:ml-6">
@@ -72,11 +71,8 @@ const ProductDetail = () => {
                                
                             </div>
                             <div className="flex md:hidden justify-between items-center gap-2">
-                                <p className="text-2xl font-bold mb-2">Price: <span className="text-orange-600 font-bold">${data?.price}</span></p>
-                                <div className="flex items-center gap-2">
-                                    <FaHeart className="text-2xl font-bold mb-2 text-orange-600" />
-                                    <h1 className="text-2xl font-bold mb-2 text-orange-600"> {data?.rating}</h1>
-                                </div>
+                                <p className="text-xl md:text-2xl font-bold mt-6 md:mt-0 mb-2">Price: <span className="text-orange-600 font-bold">${data?.price}</span></p>
+                                
                             </div>
                             <p className="hidden md:block text-xl font-bold mb-2">Price: <span className="text-orange-600 font-bold">${data?.price}</span></p>
                             <p className="text-xl  font-bold mb-2">Quantity: <span className="text-orange-600 font-semibold">{data?.quantity}</span></p>

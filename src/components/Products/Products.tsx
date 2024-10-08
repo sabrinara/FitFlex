@@ -127,7 +127,7 @@ const Products = () => {
           </div>
           <button
             onClick={toggleSortByPrice}
-            className={`border border-orange-600 bg-white text-orange-700 px-3 py-2 rounded-md font-semibold ${sortByPrice ? "bg-orange-600 text-white" : ""
+            className={`border border-orange-600 bg-white text-orange-700 px-3 py-2 rounded-md font-semibold ${sortByPrice ? "" : ""
               }`}
           >
             Sort by Price

@@ -25,7 +25,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
             key={item._id}
             className="flex flex-col justify-center items-center transform hover:scale-105 transition-transform duration-300"
           >
-            <div className="px-3 bg-neutral-900 h-[15rem] rounded-full md:w-60 hover:bg-orange-800">
+            <div className="px-3 bg-neutral-900 h-[15rem] rounded-full w-60 hover:bg-orange-800">
              <Link to={`/products/${item._id}`}>
              <div className="relative">
                 <img
