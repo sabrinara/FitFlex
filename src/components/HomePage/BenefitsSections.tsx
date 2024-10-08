@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { Link } from 'react-router-dom';
 
 const BenefitsSections = () => {
     useEffect(() => {
@@ -22,9 +23,11 @@ const BenefitsSections = () => {
                     <p className="text-xl font-thin md:ml-20 pb-10 text-slate-400">
                         Our premium gym machines are designed to enhance your workout experience. With durable construction and versatile settings, they are perfect for strength training, cardiovascular exercises, and home gyms. Built to last, these machines ensure you achieve your fitness goals with maximum efficiency.
                     </p>
+                  <Link to="/products">
                    <div className="flex justify-center md:justify-end">
                    <button className="text-2xl border border-slate-800 hover:bg-orange-700 text-orange-600 hover:text-white font-bold py-2 px-4 md:py-4 md:px-8 rounded ">View Collection</button>
                    </div>
+                  </Link>
                 </div>
             </div>
             <div className="hidden md:flex flex-col md:flex-row justify-between items-center gap-10 my-10">
@@ -61,9 +64,11 @@ const BenefitsSections = () => {
                     <p className="text-xl font-thin md:ml-20 pb-10 text-slate-400">
                         Discover our latest collection of gym machines, tailored for fitness enthusiasts and professionals alike. Each machine is designed for durability, ease of use, and superior performance, offering a comprehensive solution to enhance your fitness journey.
                     </p>
+                  <Link to="/products">
                    <div className="flex justify-center md:justify-end">
                    <button className="text-2xl border border-slate-800 hover:bg-orange-700 text-orange-600 hover:text-white font-bold py-2 px-4 md:py-4 md:px-8 rounded ">View Collection</button>
                    </div>
+                  </Link>
                 </div>
             </div>
         </div>
